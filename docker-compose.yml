@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: cloudstream
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+      - TMDB_API_KEY=${TMDB_API_KEY}
+      - REAL_DEBRID_API_KEY=${REAL_DEBRID_API_KEY}
+      - TRAKT_CLIENT_ID=${TRAKT_CLIENT_ID}
+      - TRAKT_CLIENT_SECRET=${TRAKT_CLIENT_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - GUEST_EMAIL=${GUEST_EMAIL}
+      - GUEST_PASSWORD=${GUEST_PASSWORD}
+    volumes:
+      - ./.next/cache:/app/.next/cache
