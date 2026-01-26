@@ -9,6 +9,20 @@ echo "========================================"
 echo "   🚀 CloudStream Server Setup Bot      "
 echo "========================================"
 
+# 0. Add Swap Memory (Crucial for 1GB Servers)
+if [ ! -f /swapfile ]; then
+    echo ""
+    echo "💾 [0/5] Adding 2GB Swap Memory (Prevent Build Crashes)..."
+    fallocate -l 2G /swapfile 2>/dev/null || dd if=/dev/zero of=/swapfile bs=1M count=2048
+    chmod 600 /swapfile
+    mkswap /swapfile
+    swapon /swapfile
+    echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+    echo "✅ Swap added."
+else
+    echo "✅ Swap already exists."
+fi
+
 # 1. Update and Install System Dependencies
 echo ""
 echo "📦 [1/5] Installing System Dependencies (Docker, Nginx)..."
