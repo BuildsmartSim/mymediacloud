@@ -6,7 +6,7 @@ const IMAGE_BASE = "https://image.tmdb.org/t/p/original";
 
 async function fetchTMDB(endpoint: string, params: Record<string, string> = {}) {
     if (!TMDB_API_KEY) {
-        console.error("TMDB_API_KEY is missing");
+        console.error("TMDB_API_KEY is missing in environment");
         return null;
     }
 
@@ -17,20 +17,29 @@ async function fetchTMDB(endpoint: string, params: Record<string, string> = {}) 
     });
 
     try {
-        console.log(`Fetching TMDB: ${endpoint}`);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+        const fullUrl = `${BASE_URL}${endpoint}?${query.toString()}`;
+        console.log(`Fetching TMDB: ${endpoint} (Key Length: ${TMDB_API_KEY.length})`);
 
-        const res = await fetch(`${BASE_URL}${endpoint}?${query.toString()}`, {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout for stability
+
+        const res = await fetch(fullUrl, {
             next: { revalidate: 3600 },
             signal: controller.signal
         });
         clearTimeout(timeoutId);
 
-        if (!res.ok) throw new Error(`TMDB Error: ${res.status} ${res.statusText}`);
-        return await res.json();
-    } catch (error) {
-        console.error("TMDB Fetch Error:", error);
+        if (!res.ok) {
+            const errorBody = await res.text().catch(() => "No body");
+            console.error(`TMDB Error Details: ${res.status} ${res.statusText} | Body: ${errorBody.substring(0, 100)}`);
+            throw new Error(`TMDB Error: ${res.status}`);
+        }
+
+        const data = await res.json();
+        console.log(`TMDB Success: ${endpoint} | Results: ${data?.results?.length || 0}`);
+        return data;
+    } catch (error: any) {
+        console.error("TMDB Fetch Exception:", error.message);
         return null;
     }
 }
