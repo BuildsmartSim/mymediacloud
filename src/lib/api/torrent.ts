@@ -217,7 +217,11 @@ export async function searchTorrents(query: string, expectedYear?: number): Prom
         const normalizedQuery = normalizeTitle(query);
         console.log("[TorrentAPI] Searching for:", normalizedQuery, expectedYear ? `(${expectedYear})` : '');
 
-        const res = await fetch(`${APIBAY_URL}/q.php?q=${encodeURIComponent(normalizedQuery)}&cat=`);
+        const res = await fetch(`${APIBAY_URL}/q.php?q=${encodeURIComponent(normalizedQuery)}&cat=`, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
+        });
 
         if (!res.ok) {
             console.error("[TorrentAPI] Fetch error:", res.statusText);

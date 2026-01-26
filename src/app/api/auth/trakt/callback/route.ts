@@ -12,7 +12,8 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const data = await exchangeCode(code);
+        const origin = req.nextUrl.origin;
+        const data = await exchangeCode(code, origin);
 
         // Store tokens
         // Access Token (Valid for 3 months usually)

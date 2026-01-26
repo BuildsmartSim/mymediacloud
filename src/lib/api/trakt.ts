@@ -28,24 +28,28 @@ export async function fetchTrakt(endpoint: string) {
 // Example: Get User Watchlist (Requires Auth or username public)
 // For now, we'll just fetch generic trending if no auth
 // Trakt OAuth Dynamic Redirect
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-const REDIRECT_URI = `${APP_URL}/api/auth/trakt/callback`;
-
-export async function getAuthUrl() {
+export async function getAuthUrl(origin?: string) {
     if (!TRAKT_CLIENT_ID) return "";
-    return `${BASE_URL}/oauth/authorize?response_type=code&client_id=${TRAKT_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+
+    const appUrl = origin || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const redirectUri = `${appUrl}/api/auth/trakt/callback`;
+
+    return `${BASE_URL}/oauth/authorize?response_type=code&client_id=${TRAKT_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}`;
 }
 
-export async function exchangeCode(code: string) {
+export async function exchangeCode(code: string, origin?: string) {
     if (!TRAKT_CLIENT_ID || !process.env.TRAKT_CLIENT_SECRET) {
         throw new Error("Trakt secrets missing");
     }
+
+    const appUrl = origin || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const redirectUri = `${appUrl}/api/auth/trakt/callback`;
 
     const payload = {
         code,
         client_id: TRAKT_CLIENT_ID,
         client_secret: process.env.TRAKT_CLIENT_SECRET,
-        redirect_uri: REDIRECT_URI,
+        redirect_uri: redirectUri,
         grant_type: "authorization_code",
     };
 
