@@ -27,11 +27,13 @@ export async function fetchTrakt(endpoint: string) {
 
 // Example: Get User Watchlist (Requires Auth or username public)
 // For now, we'll just fetch generic trending if no auth
-const REDIRECT_URI = "http://localhost:3000/api/auth/trakt/callback";
+// Trakt OAuth Dynamic Redirect
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+const REDIRECT_URI = `${APP_URL}/api/auth/trakt/callback`;
 
 export async function getAuthUrl() {
     if (!TRAKT_CLIENT_ID) return "";
-    return `${BASE_URL}/oauth/authorize?response_type=code&client_id=${TRAKT_CLIENT_ID}&redirect_uri=${REDIRECT_URI}`;
+    return `${BASE_URL}/oauth/authorize?response_type=code&client_id=${TRAKT_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
 }
 
 export async function exchangeCode(code: string) {
