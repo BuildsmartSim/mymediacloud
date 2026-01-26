@@ -4,6 +4,7 @@ import { SearchBar } from "@/components/ui/search-bar";
 import Link from "next/link";
 import { MovieRow } from "@/components/features/movies/movie-row";
 import { Play, Info, Star } from "lucide-react";
+import { Suspense } from "react";
 
 export default async function TVHome() {
     // Fetch TV Data
@@ -87,7 +88,9 @@ export default async function TVHome() {
 
             {/* SEARCH BAR */}
             <div className="px-4 md:px-12 -mt-8 relative z-30 mb-12">
-                <SearchBar placeholder="Search for TV Series..." />
+                <Suspense fallback={<div className="h-14 w-full max-w-2xl mx-auto bg-slate-900/50 rounded-full animate-pulse" />}>
+                    <SearchBar placeholder="Search for TV Series..." />
+                </Suspense>
             </div>
 
             {/* LANES */}
