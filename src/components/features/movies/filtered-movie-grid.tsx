@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { Star, Filter, ArrowUpDown, Clock, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { getImageUrl } from "@/lib/api/tmdb";
+import { WatchedIndicator } from "@/components/features/trakt/watched-indicator";
 
 interface Movie {
     id: number;
@@ -157,6 +158,7 @@ export function FilteredMovieGrid({ initialMovies, title, description }: Filtere
                             loading="lazy"
                             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
+                        <WatchedIndicator tmdbId={m.id} />
 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                             <h3 className="font-bold text-white text-sm line-clamp-2">{m.title || m.name}</h3>

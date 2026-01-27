@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Search, User, Cloud } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SearchBar } from "@/components/ui/search-bar";
 
 export function Navbar() {
     return (
@@ -18,8 +19,13 @@ export function Navbar() {
                 </span>
             </Link>
 
+            {/* Search Bar & Nav */}
+            <div className="flex-1 max-w-xl mx-8 hidden md:block">
+                <SearchBar placeholder="Search..." className="h-10 text-sm bg-secondary/50 border-white/5 focus:ring-1" iconSize="w-4 h-4" />
+            </div>
+
             {/* Navigation Links */}
-            <div className="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide text-muted-foreground/80">
+            <div className="hidden md:flex items-center gap-6 font-medium text-sm tracking-wide text-muted-foreground/80">
                 <Link href="/" className="hover:text-primary transition-colors hover:text-glow">MOVIES</Link>
                 <Link href="/tv" className="hover:text-primary transition-colors hover:text-glow">SERIES</Link>
                 <Link href="/settings" className="hover:text-primary transition-colors hover:text-glow">SETTINGS</Link>
@@ -27,11 +33,7 @@ export function Navbar() {
 
             {/* Actions */}
             <div className="flex items-center gap-4">
-                <div className="relative group">
-                    <button className="p-2 rounded-full hover:bg-white/5 transition-colors text-foreground/70 hover:text-primary">
-                        <Search className="w-5 h-5" />
-                    </button>
-                </div>
+
                 <button className="p-2 rounded-full hover:bg-white/5 transition-colors text-foreground/70 hover:text-primary">
                     <User className="w-5 h-5" />
                 </button>

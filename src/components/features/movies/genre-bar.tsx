@@ -3,11 +3,17 @@ import { Telescope, Mountain, Anchor, Zap, Laugh, Skull } from "lucide-react";
 
 const GENRES = [
     { name: "Action", slug: "action", icon: Zap },
-    { name: "Comedy", slug: "smart-comedy", icon: Laugh },
+    { name: "Adventure", slug: "adventure", icon: Mountain },
+    { name: "Animation", slug: "animation", icon: null }, // Need icon?
+    { name: "Comedy", slug: "comedy", icon: Laugh },
     { name: "Drama", slug: "drama", icon: null },
-    { name: "Thriller", slug: "thriller", icon: Skull },
+    { name: "Horror", slug: "horror", icon: Skull },
     { name: "Sci-Fi", slug: "scifi", icon: Telescope },
-    { name: "Adventure", slug: "adventure-heart", icon: Mountain },
+    { name: "Thriller", slug: "thriller", icon: null },
+    { name: "Fantasy", slug: "fantasy", icon: null }, // Sparkles?
+    { name: "Romance", slug: "romance", icon: null }, // Heart?
+    { name: "Musical", slug: "musical", icon: null }, // Music?
+    { name: "Documentary", slug: "documentary", icon: null }, // Camera?
 ];
 
 export function GenreBar() {

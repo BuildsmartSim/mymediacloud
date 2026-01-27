@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Star } from "lucide-react";
 import { getImageUrl } from "@/lib/api/tmdb";
+import { WatchedIndicator } from "@/components/features/trakt/watched-indicator";
 
 interface MovieRowProps {
     title: string;
@@ -64,6 +65,7 @@ export function MovieRow({ title, movies, isSeries, categorySlug }: MovieRowProp
                         className="flex-shrink-0 w-[150px] md:w-[200px] snap-start group relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-800 border border-white/5 shadow-lg transition-all duration-300 hover:scale-105 hover:z-10 hover:border-primary/50 hover:shadow-primary/20"
                     >
                         <SmartPoster movie={m} />
+                        <WatchedIndicator tmdbId={m.id} type={isSeries ? "shows" : "movies"} />
 
                         {/* Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">

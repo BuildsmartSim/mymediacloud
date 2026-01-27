@@ -146,13 +146,13 @@ export function SmartPlayButton({ query, year, season, episode, variant = "defau
     }
 
     const containerClass = isHero
-        ? "bg-black/40 backdrop-blur-sm p-4 rounded-xl border border-white/10"
+        ? "bg-black/20 backdrop-blur-xl p-4 rounded-xl border border-white/10 shadow-2xl"
         : "space-y-3";
 
     if (status === "found-options") {
         return (
             <div className={containerClass}>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-3 px-2">
                     <span className={`flex items-center gap-2 text-yellow-500 font-bold ${isHero ? "text-lg" : "text-sm"}`}>
                         <Zap className={isHero ? "w-5 h-5 fill-current" : "w-4 h-4 fill-current"} />
                         {options.length} Sources Found
@@ -160,49 +160,63 @@ export function SmartPlayButton({ query, year, season, episode, variant = "defau
                 </div>
 
                 {/* Scrollable source list */}
-                <div className={`overflow-y-auto space-y-2 bg-black/40 rounded-lg p-2 border border-white/5 mb-4 ${isHero ? "max-h-96" : "max-h-64"}`}>
-                    {options.map((opt, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setSelectedOption(opt)}
-                            className={`w-full text-left p-3 rounded-lg transition-all ${selectedOption === opt
-                                ? 'bg-yellow-500/20 border-2 border-yellow-500'
-                                : 'bg-white/5 hover:bg-white/10 border-2 border-transparent'
-                                }`}
-                        >
-                            {/* Row 1: Quality, Source, Size */}
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className={`px-2 py-1 rounded font-bold text-xs ${opt.quality === '2160p' ? 'bg-purple-500 text-white' :
-                                    opt.quality === '1080p' ? 'bg-blue-500 text-white' :
-                                        opt.quality === '720p' ? 'bg-green-500 text-white' :
-                                            'bg-gray-500 text-white'
+                <div className={`overflow-y-auto space-y-1 pr-2 mb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent ${isHero ? "max-h-96" : "max-h-64"}`}>
+                    {options.map((opt, i) => {
+                        const filename = opt.title.toLowerCase();
+                        const isExtended = filename.includes("extended") || filename.includes("directors") || filename.includes("uncut");
+                        const isHdr = filename.includes("hdr") || filename.includes("dv") || filename.includes("dolby.vision");
+                        const isAtmos = filename.includes("atmos") || filename.includes("truehd");
+                        const isRemux = filename.includes("remux");
+
+                        return (
+                            <button
+                                key={i}
+                                onClick={() => setSelectedOption(opt)}
+                                className={`w-full group text-left px-4 py-3 rounded-lg transition-all flex items-center gap-4 ${selectedOption === opt
+                                    ? 'bg-white/10'
+                                    : 'hover:bg-white/5'
+                                    }`}
+                            >
+                                {/* LEFT: Quality Badge */}
+                                <div className={`flex-shrink-0 w-12 text-center py-1 rounded font-bold text-xs ${opt.quality === '2160p' ? 'bg-yellow-500 text-black' :
+                                    opt.quality === '1080p' ? 'bg-white/20 text-white' :
+                                        'bg-slate-700 text-slate-300'
                                     }`}>
                                     {opt.quality}
-                                </span>
-                                <span className="text-xs text-slate-300">{opt.source}</span>
-                                <span className="text-xs text-white font-medium">{opt.size}</span>
-                                {opt.year && (
-                                    <span className="text-xs bg-slate-700 px-2 py-0.5 rounded text-slate-300">{opt.year}</span>
-                                )}
-                                <span className="text-xs text-slate-400 ml-auto">{opt.seeds} seeds</span>
-                            </div>
+                                </div>
 
-                            {/* Row 2: Filename */}
-                            <div className="text-xs text-slate-400 leading-relaxed break-all">
-                                {opt.title}
-                            </div>
-                        </button>
-                    ))}
+                                {/* CENTER: Info Stack */}
+                                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                    <div className="flex flex-wrap items-center gap-2 mb-0.5">
+                                        <span className="text-sm font-bold text-white">{opt.source}</span>
+                                        {isRemux && <span className="px-1.5 py-0.5 text-[10px] font-bold bg-purple-500/20 text-purple-300 rounded uppercase tracking-wider">REMUX</span>}
+                                        {isExtended && <span className="px-1.5 py-0.5 text-[10px] font-bold bg-yellow-500/20 text-yellow-300 rounded uppercase tracking-wider">EXTENDED</span>}
+                                        {isHdr && <span className="px-1.5 py-0.5 text-[10px] font-bold bg-blue-500/20 text-blue-300 rounded uppercase tracking-wider">HDR</span>}
+                                        {isAtmos && <span className="px-1.5 py-0.5 text-[10px] font-bold bg-green-500/20 text-green-300 rounded uppercase tracking-wider">ATMOS</span>}
+                                    </div>
+                                    <div className="text-[10px] text-slate-500 truncate group-hover:text-slate-400 transition-colors">
+                                        {opt.title}
+                                    </div>
+                                </div>
+
+                                {/* RIGHT: Stats */}
+                                <div className="flex-shrink-0 text-right">
+                                    <div className="text-sm font-bold text-white">{opt.size}</div>
+                                    <div className="text-[10px] text-green-400 font-medium">{opt.seeds} seeds</div>
+                                </div>
+                            </button>
+                        );
+                    })}
                 </div>
 
                 {/* Play button */}
                 {selectedOption && (
                     <button
                         onClick={handlePlay}
-                        className={`w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-lg flex items-center justify-center gap-2 ${isHero ? "py-4 text-base" : "py-3 text-sm"}`}
+                        className={`w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-yellow-500/20 transition-transform active:scale-95 ${isHero ? "py-4 text-base" : "py-3 text-sm"}`}
                     >
                         <Play className={isHero ? "w-5 h-5 fill-current" : "w-4 h-4 fill-current"} />
-                        PLAY: {selectedOption.quality} • {selectedOption.size}
+                        STREAM NOW
                     </button>
                 )}
 
@@ -223,16 +237,22 @@ export function SmartPlayButton({ query, year, season, episode, variant = "defau
     }
 
     if (status === "ready" && streamUrl) {
-        const openVlc = async () => {
-            try {
-                const res = await fetch(`/api/launch-vlc?url=${encodeURIComponent(streamUrl)}`);
-                const data = await res.json();
-                if (!data.success) {
-                    alert('Failed to launch VLC: ' + (data.error || 'Unknown error'));
-                }
-            } catch (e) {
-                alert('Error launching VLC');
-            }
+        const handleVlc = () => {
+            // Create an M3U playlist file content
+            const m3uContent = `#EXTM3U\n#EXTINF:-1,CloudStream Content\n${streamUrl}`;
+
+            // Create a blob and link to trigger download
+            const blob = new Blob([m3uContent], { type: 'audio/x-mpegurl' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'stream.m3u');
+            document.body.appendChild(link);
+            link.click();
+
+            // Cleanup
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
         };
 
         return (
@@ -243,15 +263,15 @@ export function SmartPlayButton({ query, year, season, episode, variant = "defau
 
                 <div className="flex gap-3">
                     <button
-                        onClick={openVlc}
-                        className="flex-1 py-4 bg-[#ff5500] hover:bg-[#ff7700] rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg hover:shadow-orange-500/20 transition-all"
+                        onClick={handleVlc}
+                        className="flex-1 py-4 bg-white/10 hover:bg-white/20 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg backdrop-blur-md transition-all border border-white/5 hover:border-white/20"
                     >
                         <Play className="w-5 h-5 fill-current" />
-                        OPEN VLC PLAYER
+                        OPEN IN VLC
                     </button>
                     <button
                         onClick={copyUrl}
-                        className="px-4 py-4 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl font-bold text-white flex items-center justify-center gap-2"
+                        className="px-4 py-4 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-colors"
                         title="Copy Stream URL"
                     >
                         <Copy className="w-5 h-5" />

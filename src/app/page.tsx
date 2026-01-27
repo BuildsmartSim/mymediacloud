@@ -1,9 +1,8 @@
 import { Play, Info, Star, Cloud, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getTrendingMovies, getImageUrl, discoverMovies, KEYWORDS } from "@/lib/api/tmdb";
-import { getUserWatchlist } from "@/lib/api/trakt";
+import { getUserWatchlist, getRecommendedMovies } from "@/lib/api/trakt";
 import { SmartPlayButton } from "@/components/ui/smart-play-button";
-import { SearchBar } from "@/components/ui/search-bar";
 import Link from "next/link";
 import { MovieRow } from "@/components/features/movies/movie-row";
 import { GenreBar } from "@/components/features/movies/genre-bar";
@@ -13,8 +12,11 @@ export default async function Home() {
   const cookieStore = await cookies();
   const traktToken = cookieStore.get("trakt_token")?.value;
 
-  // Fetch Watchlist if token exists
-  const watchlist = traktToken ? await getUserWatchlist(traktToken) : [];
+  // Fetch Watchlist & Recommendations if token exists
+  const [watchlist, recommendations] = traktToken ? await Promise.all([
+    getUserWatchlist(traktToken),
+    getRecommendedMovies(traktToken)
+  ]) : [[], []];
 
   // Fetch specific "Lanes" based on user persona
   const [
@@ -106,10 +108,7 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* SEARCH BAR - Floating overlap */}
-      <div className="px-4 md:px-12 -mt-12 relative z-30 mb-4">
-        <SearchBar />
-      </div>
+
 
       {/* GENRE BAR */}
       <div className="relative z-30 mb-4">
@@ -118,11 +117,6 @@ export default async function Home() {
 
       {/* LANES */}
       <div className="space-y-2 relative z-20">
-
-        {/* DEBUG: Remove later */}
-        <div className="px-4 md:px-12 py-2 text-xs font-mono text-yellow-500 bg-black/50">
-          DEBUG: Token: {traktToken ? "YES" : "NO"} | Items: {watchlist.length}
-        </div>
 
         {watchlist.length > 0 ? (
           <MovieRow title="Your Watchlist (Trakt)" movies={watchlist} />
@@ -134,13 +128,18 @@ export default async function Home() {
             </div>
           )
         )}
+
+        {recommendations.length > 0 && (
+          <MovieRow title="Recommended For You" movies={recommendations} />
+        )}
+
+        <MovieRow title="Trending Now" movies={trending?.results} />
         <MovieRow title="Cosmic Dread & Space Epics" movies={spaceEpics?.results} categorySlug="space-epics" />
         <MovieRow title="High Stakes: Survival & Disaster" movies={highStakes?.results} categorySlug="high-stakes" />
         <MovieRow title="The Abyss: Deep Sea & Submarines" movies={seaMovies?.results} categorySlug="the-abyss" />
         <MovieRow title="80s Sci-Fi Gold" movies={eightiesSciFi?.results} categorySlug="80s-scifi" />
         <MovieRow title="Adventure with Heart" movies={adventure?.results} categorySlug="adventure-heart" />
         <MovieRow title="Smart Comedy" movies={smartComedy?.results} categorySlug="smart-comedy" />
-        <MovieRow title="Trending Now" movies={trending?.results} />
       </div>
     </div>
   );

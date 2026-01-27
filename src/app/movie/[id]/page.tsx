@@ -1,5 +1,6 @@
 import { getMovieDetails, getMovieCredits, getImageUrl } from "@/lib/api/tmdb";
 import { SmartPlayButton } from "@/components/ui/smart-play-button";
+import { BookmarkButton } from "@/components/features/trakt/bookmark-button";
 import { Star, Clock, Calendar, User, Film } from "lucide-react";
 import Link from "next/link";
 
@@ -35,7 +36,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
         <div className="min-h-screen bg-background">
             {/* Backdrop */}
             <div
-                className="absolute top-0 left-0 right-0 h-[500px] bg-cover bg-center"
+                className="absolute top-0 left-0 right-0 h-[75vh] bg-cover bg-center"
                 style={{ backgroundImage: `url(${getImageUrl(movie.backdrop_path)})` }}
             >
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-background" />
@@ -192,7 +193,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
 
                     {/* RIGHT: Torrent Sources */}
                     <div className="lg:sticky lg:top-28 lg:self-start">
-                        <div className="bg-black/40 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+                        <div className="bg-black/20 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl">
                             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                                 🎬 Stream This Movie
                             </h2>
@@ -201,6 +202,10 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                                 year={year}
                                 variant="hero"
                             />
+
+                            <div className="mt-4">
+                                <BookmarkButton tmdbId={movie.id} />
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -33,7 +33,16 @@ export default async function SettingsPage() {
                                     <Check className="w-4 h-4" />
                                     CONNECTED
                                 </span>
-                                {/* Future: Disconnect button (delete cookie) */}
+                                <form action={async () => {
+                                    "use server";
+                                    const { cookies } = await import("next/headers");
+                                    const cookieStore = await cookies();
+                                    cookieStore.delete("trakt_token");
+                                }}>
+                                    <button className="text-red-400 hover:text-red-300 text-sm font-bold flex items-center gap-2">
+                                        <LogOut className="w-4 h-4" /> DISCONNECT
+                                    </button>
+                                </form>
                             </div>
                         ) : (
                             <Link
