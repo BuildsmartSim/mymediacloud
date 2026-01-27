@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -8,21 +11,35 @@ interface SeasonSelectorProps {
 }
 
 export function SeasonSelector({ tvId, seasons, currentSeason }: SeasonSelectorProps) {
-    // Filter out Season 0 (Specials) usually, or keep them at the end? 
-    // Usually standard seasons are 1+, strictly.
+    const scrollRef = useRef<HTMLDivElement>(null);
     const validSeasons = seasons.filter(s => s.season_number > 0);
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (!scrollRef.current) return;
+        const scrollAmount = 150;
+        if (e.key === "ArrowRight") {
+            scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        } else if (e.key === "ArrowLeft") {
+            scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        }
+    };
+
     return (
-        <div className="flex items-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
+        <div
+            ref={scrollRef}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+            className="flex flex-wrap items-center gap-3 pb-4 focus:outline-none focus:ring-1 focus:ring-primary/20 rounded-xl"
+        >
             {validSeasons.map((season) => {
                 const isActive = season.season_number === currentSeason;
                 return (
                     <Link
                         key={season.id}
                         href={`/tv/${tvId}?season=${season.season_number}`}
-                        scroll={false} // Don't scroll to top on season switch
+                        scroll={false}
                         className={cn(
-                            "flex-shrink-0 px-6 py-2 rounded-full font-bold text-sm transition-all whitespace-nowrap",
+                            "px-6 py-2 rounded-full font-bold text-sm transition-all whitespace-nowrap",
                             isActive
                                 ? "bg-white text-black scale-105"
                                 : "bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white"
@@ -35,3 +52,4 @@ export function SeasonSelector({ tvId, seasons, currentSeason }: SeasonSelectorP
         </div>
     );
 }
+

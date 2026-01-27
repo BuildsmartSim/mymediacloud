@@ -22,7 +22,9 @@ export const CATEGORY_SLUGS: Record<string, CategoryDef> = {
             { title: "Martial Arts", params: { with_genres: "28", with_keywords: "9374" } }, // martial arts
             { title: "Heist", params: { with_genres: "28", with_keywords: "10051" } }, // heist
             { title: "Disaster", params: { with_genres: "28", with_keywords: "1960" } }, // disaster
-            { title: "War", params: { with_genres: "10752" } }
+            { title: "War", params: { with_genres: "10752" } },
+            { title: "Police Action", params: { with_genres: "28", with_keywords: "11005" } },
+            { title: "Western Action", params: { with_genres: "28,37" } }
         ]
     },
 
@@ -163,7 +165,47 @@ export const CATEGORY_SLUGS: Record<string, CategoryDef> = {
         subCategories: [
             { title: "True Crime", params: { with_genres: "99", with_keywords: "9663" } }, // true crime
             { title: "Nature", params: { with_genres: "99", with_keywords: "10594" } }, // nature
-            { title: "Biographical", params: { with_genres: "99", with_keywords: "5565" } }
+            { title: "Biographical", params: { with_genres: "99", with_keywords: "5565" } },
+            { title: "Science & Technology", params: { with_genres: "99", with_keywords: "10732" } },
+            { title: "Politics & History", params: { with_genres: "99,36" } }
         ]
+    },
+
+    // --- HOMEPAGE SLUGS (to fix 404s) ---
+
+    "space-epics": {
+        title: "Cosmic Dread & Space Epics",
+        description: "The vast loneliness and terrifying mystery of the final frontier.",
+        params: { with_genres: "878", with_keywords: KEYWORDS.SPACE, sort_by: "vote_average.desc", "vote_count.gte": "500" }
+    },
+
+    "high-stakes": {
+        title: "High Stakes: Survival & Disaster",
+        description: "Characters pushed to their limits in the face of certain doom.",
+        params: { with_keywords: KEYWORDS.SURVIVAL, sort_by: "popularity.desc" }
+    },
+
+    "the-abyss": {
+        title: "The Abyss: Deep Sea & Submarines",
+        description: "Claustrophobic tension in the world's deepest, darkest waters.",
+        params: { with_keywords: KEYWORDS.SEA, sort_by: "vote_average.desc", "vote_count.gte": "100" }
+    },
+
+    "80s-scifi": {
+        title: "80s Sci-Fi Gold",
+        description: "Synths, neon, and high-concept imagination from a golden era.",
+        params: { with_genres: "878", "primary_release_date.gte": "1980-01-01", "primary_release_date.lte": "1989-12-31", sort_by: "vote_count.desc" }
+    },
+
+    "adventure-heart": {
+        title: "Adventure with Heart",
+        description: "Epic journeys that stir the soul and warm the heart.",
+        params: { with_genres: "12", sort_by: "vote_average.desc", "vote_count.gte": "1000", "vote_average.gte": "7" }
+    },
+
+    "smart-comedy": {
+        title: "Smart Comedy",
+        description: "Witty, intelligent, and genuinely funny stories.",
+        params: { with_genres: "35", sort_by: "vote_count.desc", "vote_average.gte": "7.0" }
     }
 };

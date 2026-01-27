@@ -159,7 +159,7 @@ export function FilteredMovieGrid({ initialMovies, title, description, isSeries 
                             loading="lazy"
                             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        <WatchedIndicator tmdbId={m.id} />
+                        <WatchedIndicator tmdbId={m.id} type={isSeries ? "shows" : "movies"} />
 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                             <h3 className="font-bold text-white text-sm line-clamp-2">{m.title || m.name}</h3>

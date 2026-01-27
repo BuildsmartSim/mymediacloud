@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import { getImageUrl } from "@/lib/api/tmdb";
@@ -13,19 +16,6 @@ interface MovieRowProps {
 
 // Internal component to handle image fetching if only ID is known (Trakt items)
 function SmartPoster({ movie }: { movie: any }) {
-    // Determine image source
-    // In a real app, we'd use SWR or React Query to fetch the poster if missing.
-    // For this MVP, we will rely on the fact that if it's from Trakt, we passed the OMDB/TMDB ID?
-    // Actually, Trakt API mapping is complex.
-    // Let's use a simple placeholder if missing, OR...
-    // The Trakt API library SHOULD have fetched it.
-    // Let's assume for now we use placeholder if missing to avoid N+1 complexity in this component.
-
-    // BETTER FIX: We will just fetch the image URL directly from TMDB in a useEffect? 
-    // No, standard `img` tag with TMDB URL pattern needs the path.
-    // Let's just use the placeholder for now if it's missing, effectively showing "No Image" for watchlist items
-    // until we implement the bulk fetcher properly in the API layer.
-
     const src = movie.poster_path ? getImageUrl(movie.poster_path) : "/placeholder.jpg";
 
     return (
@@ -39,10 +29,23 @@ function SmartPoster({ movie }: { movie: any }) {
 }
 
 export function MovieRow({ title, movies, isSeries, categorySlug, viewAllLink }: MovieRowProps) {
+    const scrollRef = useRef<HTMLDivElement>(null);
+
     if (!movies || movies.length === 0) return null;
 
     // Determine the target link: viewAllLink takes precedence, then categorySlug construction
     const targetLink = viewAllLink || (categorySlug ? `/category/${categorySlug}` : null);
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (!scrollRef.current) return;
+
+        const scrollAmount = 300;
+        if (e.key === "ArrowRight") {
+            scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        } else if (e.key === "ArrowLeft") {
+            scrollRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+        }
+    };
 
     return (
         <div className="py-6 space-y-4">
@@ -61,7 +64,12 @@ export function MovieRow({ title, movies, isSeries, categorySlug, viewAllLink }:
                 )}
             </div>
 
-            <div className="flex gap-4 overflow-x-auto px-4 md:px-12 pb-8 scrollbar-hide snap-x">
+            <div
+                ref={scrollRef}
+                onKeyDown={handleKeyDown}
+                tabIndex={0}
+                className="flex gap-4 overflow-x-auto px-4 md:px-12 pb-8 scrollbar-hide snap-x focus:outline-none focus:ring-1 focus:ring-primary/20"
+            >
                 {movies.map((m) => (
                     <Link
                         key={m.id}
@@ -90,3 +98,4 @@ export function MovieRow({ title, movies, isSeries, categorySlug, viewAllLink }:
         </div>
     );
 }
+

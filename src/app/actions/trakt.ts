@@ -98,14 +98,13 @@ export async function getUserTraktData() {
         ]);
 
         return {
-            watchlist: watchlist.map((item: any) => item.id),
-            historyMovies: historyMovies.map((item: any) => item.movie?.ids?.tmdb).filter(Boolean),
-            historyShows: historyShows.map((item: any) => item.show?.ids?.tmdb || item.episode?.show?.ids?.tmdb).filter(Boolean)
-            // Note: Trakt history for shows returns EPISODES. We want to know if the SHOW is watched? 
-            // Or just if any episode is watched? 
-            // Usually "watched" on a show card means "you have watched this show". 
-            // Trakt returns episodes in history/shows.
-            // Let's collect all unique show IDs from the episode history.
+            watchlist: watchlist.map((item: any) => Number(item.id || item.movie?.ids?.tmdb || item.show?.ids?.tmdb)).filter(Boolean),
+            historyMovies: historyMovies.map((item: any) => Number(item.movie?.ids?.tmdb)).filter(Boolean),
+            historyShows: Array.from(new Set(
+                historyShows.map((item: any) =>
+                    Number(item.show?.ids?.tmdb || item.episode?.show?.ids?.tmdb)
+                ).filter(Boolean)
+            ))
         };
     } catch (e) {
         console.error("Failed to fetch user trakt data", e);
