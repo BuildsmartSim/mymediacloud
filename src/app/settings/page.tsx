@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { Check, LogOut, ExternalLink, Play, Settings, Download } from "lucide-react";
+import { Check, LogOut, ExternalLink } from "lucide-react";
+import { SetupSection } from "./setup-section";
 
 export default async function SettingsPage() {
     const cookieStore = await cookies();

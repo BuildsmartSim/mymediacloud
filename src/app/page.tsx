@@ -119,7 +119,7 @@ export default async function Home() {
       <div className="space-y-2 relative z-20">
 
         {watchlist.length > 0 ? (
-          <MovieRow title="Your Watchlist (Trakt)" movies={watchlist} />
+          <MovieRow title="Your Watchlist (Trakt)" movies={watchlist} viewAllLink="/watchlist" />
         ) : (
           traktToken && (
             <div className="px-4 md:px-12 py-8 text-center border border-white/10 rounded-xl mx-4 md:mx-12 mb-8 bg-white/5">
@@ -130,7 +130,7 @@ export default async function Home() {
         )}
 
         {recommendations.length > 0 && (
-          <MovieRow title="Recommended For You" movies={recommendations} />
+          <MovieRow title="Recommended For You" movies={recommendations} viewAllLink="/recommendations" />
         )}
 
         <MovieRow title="Trending Now" movies={trending?.results} />

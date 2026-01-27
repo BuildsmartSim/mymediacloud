@@ -17,13 +17,28 @@ export default async function TVHome() {
         actionShows,
         comedyShows,
         dramaShows,
-        animationShows
+        animationShows,
+        netflixShows,
+        hboShows,
+        disneyShows,
+        appleShows,
+        paramountShows,
+        huluShows,
+        primeShows
     ] = await Promise.all([
         discoverTV({ with_genres: "10765", sort_by: "popularity.desc" }), // Sci-Fi & Fantasy
         discoverTV({ with_genres: "10759", sort_by: "popularity.desc" }), // Action & Adventure
         discoverTV({ with_genres: "35", sort_by: "popularity.desc" }), // Comedy
         discoverTV({ with_genres: "18", sort_by: "popularity.desc" }), // Drama
         discoverTV({ with_genres: "16", sort_by: "popularity.desc" }), // Animation
+        // Network Lanes
+        discoverTV({ with_networks: "213", sort_by: "popularity.desc" }), // Netflix
+        discoverTV({ with_networks: "49", sort_by: "popularity.desc" }), // HBO
+        discoverTV({ with_networks: "2739", sort_by: "popularity.desc" }), // Disney+
+        discoverTV({ with_networks: "2552", sort_by: "popularity.desc" }), // Apple TV+
+        discoverTV({ with_networks: "4330", sort_by: "popularity.desc" }), // Paramount+ (Check ID)
+        discoverTV({ with_networks: "453", sort_by: "popularity.desc" }), // Hulu
+        discoverTV({ with_networks: "1024", sort_by: "popularity.desc" }), // Amazon Prime
     ]);
 
     return (
@@ -100,6 +115,18 @@ export default async function TVHome() {
                 <MovieRow title="Comedy Hits" movies={comedyShows?.results} isSeries />
                 <MovieRow title="Critically Acclaimed Dramas" movies={dramaShows?.results} isSeries />
                 <MovieRow title="Animation" movies={animationShows?.results} isSeries />
+
+                <div className="pt-8 pb-4">
+                    <h2 className="text-2xl font-bold text-white mb-4 px-4 md:px-12 opacity-80 uppercase tracking-widest">Streaming Services</h2>
+                </div>
+
+                <MovieRow title="Popular on Netflix" movies={netflixShows?.results} isSeries viewAllLink="/tv/network/netflix" />
+                <MovieRow title="HBO Max Hits" movies={hboShows?.results} isSeries viewAllLink="/tv/network/hbo" />
+                <MovieRow title="Disney+ Originals" movies={disneyShows?.results} isSeries viewAllLink="/tv/network/disney" />
+                <MovieRow title="Apple TV+ Exclusives" movies={appleShows?.results} isSeries viewAllLink="/tv/network/apple" />
+                <MovieRow title="Paramount+ Mountain" movies={paramountShows?.results} isSeries viewAllLink="/tv/network/paramount" />
+                <MovieRow title="Hulu Highlights" movies={huluShows?.results} isSeries viewAllLink="/tv/network/hulu" />
+                <MovieRow title="Amazon Prime Video" movies={primeShows?.results} isSeries viewAllLink="/tv/network/amazon" />
             </div>
         </div>
     );
