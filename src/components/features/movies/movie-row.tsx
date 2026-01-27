@@ -8,6 +8,7 @@ interface MovieRowProps {
     movies: any[];
     isSeries?: boolean;
     categorySlug?: string; // Optional slug for "See All"
+    viewAllLink?: string; // Added to fix build error
 }
 
 // Internal component to handle image fetching if only ID is known (Trakt items)
@@ -37,8 +38,11 @@ function SmartPoster({ movie }: { movie: any }) {
     );
 }
 
-export function MovieRow({ title, movies, isSeries, categorySlug }: MovieRowProps) {
+export function MovieRow({ title, movies, isSeries, categorySlug, viewAllLink }: MovieRowProps) {
     if (!movies || movies.length === 0) return null;
+
+    // Determine the target link: viewAllLink takes precedence, then categorySlug construction
+    const targetLink = viewAllLink || (categorySlug ? `/category/${categorySlug}` : null);
 
     return (
         <div className="py-6 space-y-4">
@@ -47,9 +51,9 @@ export function MovieRow({ title, movies, isSeries, categorySlug }: MovieRowProp
                     <span className="w-1 h-6 bg-primary rounded-full" />
                     {title}
                 </h2>
-                {categorySlug && (
+                {targetLink && (
                     <Link
-                        href={`/category/${categorySlug}`}
+                        href={targetLink}
                         className="flex items-center gap-1 px-3 py-1 text-xs font-bold text-black bg-primary rounded-full hover:bg-white transition-colors shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                         EXPAND
