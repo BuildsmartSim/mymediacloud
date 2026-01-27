@@ -31,7 +31,6 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
             container: artRef.current,
             url: url,
             poster: poster,
-            title: title,
             volume: 1,
             isLive: false,
             muted: false,
