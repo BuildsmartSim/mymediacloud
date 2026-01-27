@@ -1,5 +1,4 @@
-"use client";
-
+import { Suspense } from "react";
 import Link from "next/link";
 import { Search, User, Cloud } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,7 +20,9 @@ export function Navbar() {
 
             {/* Search Bar & Nav */}
             <div className="flex-1 max-w-xl mx-8 hidden md:block">
-                <SearchBar placeholder="Search..." className="h-10 text-sm bg-secondary/50 border-white/5 focus:ring-1" iconSize="w-4 h-4" />
+                <Suspense fallback={<div className="h-10 bg-secondary/50 rounded-full w-full" />}>
+                    <SearchBar placeholder="Search..." className="h-10 text-sm bg-secondary/50 border-white/5 focus:ring-1" iconSize="w-4 h-4" />
+                </Suspense>
             </div>
 
             {/* Navigation Links */}
