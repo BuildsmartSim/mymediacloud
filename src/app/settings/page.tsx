@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { Check, LogOut, ExternalLink } from "lucide-react";
+import { Check, LogOut, ExternalLink, Play, Settings, Download } from "lucide-react";
 
 export default async function SettingsPage() {
     const cookieStore = await cookies();
@@ -52,6 +52,48 @@ export default async function SettingsPage() {
                                 CONNECT
                             </Link>
                         )}
+                    </div>
+                </div>
+
+                {/* PLAYER SETUP SECTION */}
+                <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-6 backdrop-blur-sm">
+                    <h2 className="text-xl font-bold text-white mb-4">Desktop Player Setup</h2>
+                    <div className="space-y-4">
+                        <div className="p-4 bg-black/40 rounded-xl border border-white/5 space-y-4">
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 bg-[#ff5500] rounded-lg flex items-center justify-center">
+                                    <Play className="w-6 h-6 text-white fill-current" />
+                                </div>
+                                <div>
+                                    <h3 className="text-white font-bold">VLC Media Player</h3>
+                                    <p className="text-slate-400 text-sm">Required for high-quality streaming on desktop.</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <a
+                                    href="https://www.videolan.org/vlc/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 rounded-lg text-white font-medium transition-colors border border-white/5"
+                                >
+                                    <Download className="w-4 h-4" />
+                                    1. Install VLC
+                                    <ExternalLink className="w-3 h-3 opacity-50" />
+                                </a>
+                                <a
+                                    href="/cloudstream-setup.bat"
+                                    download="cloudstream-setup.bat"
+                                    className="flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary/80 text-black font-bold rounded-lg transition-colors"
+                                >
+                                    <Settings className="w-4 h-4" />
+                                    2. Run Setup Script
+                                </a>
+                            </div>
+                            <p className="text-xs text-slate-500 text-center">
+                                Run the setup script once to enable "Launch VLC" on this computer.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
