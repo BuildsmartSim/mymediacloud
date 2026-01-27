@@ -142,22 +142,12 @@ export function PlayButton({ torrentId, filename, targetFilename, className, var
                                         </a>
                                         <button
                                             onClick={async () => {
-                                                if (isMobile) {
-                                                    window.location.href = `vlc://${result.url}`;
-                                                } else {
-                                                    try {
-                                                        const res = await fetch(`/api/launch-vlc?url=${encodeURIComponent(result.url!)}`);
-                                                        const data = await res.json();
-                                                        if (!res.ok) throw new Error(data.error || 'Failed to launch');
-                                                    } catch (err: any) {
-                                                        alert('Failed to launch VLC: ' + err.message);
-                                                    }
-                                                }
+                                                window.location.href = `vlc://${result.url}`;
                                             }}
                                             className="flex items-center justify-center gap-2 py-3 bg-[#ff5500] hover:bg-[#ff7700] text-white font-bold rounded-xl shadow-lg transition-colors cursor-pointer"
                                         >
                                             <Play className="w-4 h-4 fill-current" />
-                                            {isMobile ? "Open App" : "Launch VLC"}
+                                            Launch VLC
                                         </button>
                                     </div>
                                     <p className="text-[10px] text-center text-slate-500 mt-2">

@@ -273,22 +273,12 @@ export function SmartPlayButton({ query, year, season, episode, variant = "defau
                 <div className="flex gap-3">
                     <button
                         onClick={async () => {
-                            if (isMobile) {
-                                window.location.href = `vlc://${streamUrl}`;
-                            } else {
-                                try {
-                                    const res = await fetch(`/api/launch-vlc?url=${encodeURIComponent(streamUrl!)}`);
-                                    const data = await res.json();
-                                    if (!res.ok) throw new Error(data.error || 'Failed to launch');
-                                } catch (err: any) {
-                                    alert('Failed to launch VLC: ' + err.message);
-                                }
-                            }
+                            window.location.href = `vlc://${streamUrl}`;
                         }}
                         className="flex-1 py-4 bg-[#ff5500] hover:bg-[#ff7700] rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg backdrop-blur-md transition-all border border-white/5 hover:border-white/20"
                     >
                         <Play className="w-5 h-5 fill-current" />
-                        {isMobile ? "OPEN APP" : "LAUNCH VLC"}
+                        LAUNCH VLC
                     </button>
                     <button
                         onClick={copyUrl}
