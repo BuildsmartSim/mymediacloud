@@ -24,9 +24,10 @@ interface FilteredMovieGridProps {
     initialMovies: Movie[];
     title: string;
     description?: string;
+    isSeries?: boolean;
 }
 
-export function FilteredMovieGrid({ initialMovies, title, description }: FilteredMovieGridProps) {
+export function FilteredMovieGrid({ initialMovies, title, description, isSeries = false }: FilteredMovieGridProps) {
     const [movies, setMovies] = useState<Movie[]>(initialMovies);
     const [sortBy, setSortBy] = useState<"rating" | "newest" | "oldest" | "cult" | "blockbuster" | "critic">("rating");
     const [decadeFilter, setDecadeFilter] = useState<string>("all");
@@ -149,7 +150,7 @@ export function FilteredMovieGrid({ initialMovies, title, description }: Filtere
                 {filteredMovies.map((m) => (
                     <Link
                         key={m.id}
-                        href={`/movie/${m.id}`} // Assuming mostly movies for now
+                        href={`/${isSeries ? 'tv' : 'movie'}/${m.id}`}
                         className="group relative aspect-[2/3] rounded-xl overflow-hidden bg-slate-800 border border-white/5 hover:border-primary/50 transition-all shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
                     >
                         <img
