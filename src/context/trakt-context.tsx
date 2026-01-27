@@ -28,9 +28,9 @@ export function TraktProvider({ children }: { children: ReactNode }) {
     const refresh = async () => {
         try {
             const data = await getUserTraktData();
-            setWatchlist(new Set(data.watchlist));
-            setHistoryMovies(new Set(data.historyMovies));
-            setHistoryShows(new Set(data.historyShows));
+            setWatchlist(new Set(data.watchlist as number[]));
+            setHistoryMovies(new Set(data.historyMovies as number[]));
+            setHistoryShows(new Set(data.historyShows as number[]));
         } catch (e) {
             console.error(e);
         } finally {

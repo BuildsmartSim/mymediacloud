@@ -88,7 +88,7 @@ export async function getWatchedStatus(tmdbId: number | string, type: "movies" |
 
 export async function getUserTraktData() {
     const token = await getToken();
-    if (!token) return { watchlist: [], history: [] };
+    if (!token) return { watchlist: [], historyMovies: [], historyShows: [] };
 
     try {
         const [watchlist, historyMovies, historyShows] = await Promise.all([
