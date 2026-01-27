@@ -20,6 +20,9 @@ export function SmartPlayButton({ query, year, season, episode, variant = "defau
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
 
+    // Detect mobile
+    const isMobile = typeof window !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
     const handleSearch = async () => {
         setStatus("searching");
         setError(null);
@@ -98,6 +101,12 @@ export function SmartPlayButton({ query, year, season, episode, variant = "defau
                 // We need to fix `scraper.ts` as well!
 
                 setStreamUrl(result.url);
+
+                // AUTO-LAUNCH FOR MOBILE
+                if (isMobile) {
+                    window.location.href = `vlc://${result.url}`;
+                }
+
                 setStatus("ready");
             } else {
                 setError(result.error || "Failed to get stream");
@@ -263,11 +272,23 @@ export function SmartPlayButton({ query, year, season, episode, variant = "defau
 
                 <div className="flex gap-3">
                     <button
-                        onClick={handleVlc}
-                        className="flex-1 py-4 bg-white/10 hover:bg-white/20 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg backdrop-blur-md transition-all border border-white/5 hover:border-white/20"
+                        onClick={async () => {
+                            if (isMobile) {
+                                window.location.href = `vlc://${streamUrl}`;
+                            } else {
+                                try {
+                                    const res = await fetch(`/api/launch-vlc?url=${encodeURIComponent(streamUrl!)}`);
+                                    const data = await res.json();
+                                    if (!res.ok) throw new Error(data.error || 'Failed to launch');
+                                } catch (err: any) {
+                                    alert('Failed to launch VLC: ' + err.message);
+                                }
+                            }
+                        }}
+                        className="flex-1 py-4 bg-[#ff5500] hover:bg-[#ff7700] rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg backdrop-blur-md transition-all border border-white/5 hover:border-white/20"
                     >
                         <Play className="w-5 h-5 fill-current" />
-                        OPEN IN VLC
+                        {isMobile ? "OPEN APP" : "LAUNCH VLC"}
                     </button>
                     <button
                         onClick={copyUrl}

@@ -1,5 +1,6 @@
 "use client";
 
+
 import { useState } from "react";
 import { Play, Loader2, X, Copy, ExternalLink, Download } from "lucide-react";
 import { resolveStreamUrl } from "@/app/actions/stream";
@@ -19,6 +20,9 @@ export function PlayButton({ torrentId, filename, targetFilename, className, var
     const [result, setResult] = useState<{ url?: string; error?: string } | null>(null);
     const [open, setOpen] = useState(false);
 
+    // Detect mobile
+    const isMobile = typeof window !== 'undefined' && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
     const handlePlay = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -30,6 +34,12 @@ export function PlayButton({ torrentId, filename, targetFilename, className, var
         try {
             const res = await resolveStreamUrl(torrentId, targetFilename); // Pass targetFilename
             setResult(res as any);
+
+            // AUTO-LAUNCH FOR MOBILE
+            if (isMobile && res && (res as any).url) {
+                window.location.href = `vlc://${(res as any).url}`;
+            }
+
         } catch (err) {
             setResult({ error: "Failed to resolve stream." });
         } finally {
@@ -130,16 +140,30 @@ export function PlayButton({ torrentId, filename, targetFilename, className, var
                                             <Download className="w-4 h-4" />
                                             Download
                                         </a>
-                                        <a
-                                            href={`vlc://${result.url}`}
-                                            className="flex items-center justify-center gap-2 py-3 bg-[#ff5500] hover:bg-[#ff7700] text-white font-bold rounded-xl shadow-lg transition-colors"
+                                        <button
+                                            onClick={async () => {
+                                                if (isMobile) {
+                                                    window.location.href = `vlc://${result.url}`;
+                                                } else {
+                                                    try {
+                                                        const res = await fetch(`/api/launch-vlc?url=${encodeURIComponent(result.url!)}`);
+                                                        const data = await res.json();
+                                                        if (!res.ok) throw new Error(data.error || 'Failed to launch');
+                                                    } catch (err: any) {
+                                                        alert('Failed to launch VLC: ' + err.message);
+                                                    }
+                                                }
+                                            }}
+                                            className="flex items-center justify-center gap-2 py-3 bg-[#ff5500] hover:bg-[#ff7700] text-white font-bold rounded-xl shadow-lg transition-colors cursor-pointer"
                                         >
                                             <Play className="w-4 h-4 fill-current" />
-                                            Open VLC
-                                        </a>
+                                            {isMobile ? "Open App" : "Launch VLC"}
+                                        </button>
                                     </div>
                                     <p className="text-[10px] text-center text-slate-500 mt-2">
-                                        * "Open VLC" requires VLC installed and protocol configured.
+                                        {isMobile
+                                            ? "* Tries to open VLC app directly"
+                                            : "* Launches VLC Player on the host machine"}
                                     </p>
                                 </div>
                             )}
