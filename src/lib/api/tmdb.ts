@@ -44,6 +44,10 @@ export async function getTrendingMovies() {
     return fetchTMDB("/trending/movie/week");
 }
 
+export async function getTopRatedMovies(page: number = 1) {
+    return fetchTMDB("/movie/top_rated", { page: page.toString() });
+}
+
 export async function getTrendingShows() {
     return fetchTMDB("/trending/tv/week");
 }

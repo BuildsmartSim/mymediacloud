@@ -1,6 +1,6 @@
 import { Play, Info, Star, Cloud, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getTrendingMovies, getImageUrl, discoverMovies, KEYWORDS } from "@/lib/api/tmdb";
+import { getTrendingMovies, getImageUrl, discoverMovies, KEYWORDS, getTopRatedMovies } from "@/lib/api/tmdb";
 import { getUserWatchlist, getRecommendedMovies } from "@/lib/api/trakt";
 import { SmartPlayButton } from "@/components/ui/smart-play-button";
 import Link from "next/link";
@@ -37,10 +37,13 @@ export default async function Home() {
     getTrendingMovies()
   ]);
 
-  // Hero: Prioritize Space Epics for that "Cosmic" vibe, or fallback to trending
-  const heroCandidates = spaceEpics?.results?.length ? spaceEpics.results.slice(0, 5) : trending?.results?.slice(0, 5);
-  // Randomize hero from top 5
-  const heroMovieData = heroCandidates ? heroCandidates[Math.floor(Math.random() * heroCandidates.length)] : null;
+  // HERO SELECTION: Pick a random movie from Top 500 Movies Ever Made
+  // TMDB /movie/top_rated returns 20 per page. 500 movies = 25 pages.
+  const randomPage = Math.floor(Math.random() * 25) + 1;
+  const topRatedPage = await getTopRatedMovies(randomPage);
+
+  const heroCandidates = topRatedPage?.results || trending?.results || [];
+  const heroMovieData = heroCandidates[Math.floor(Math.random() * heroCandidates.length)];
 
   const heroMovie = heroMovieData ? {
     title: heroMovieData.title,
@@ -72,7 +75,7 @@ export default async function Home() {
             <>
               <div className="flex items-center gap-3 mb-6">
                 <span className="px-3 py-1 text-xs font-bold bg-primary text-black rounded-sm shadow-[0_0_15px_rgba(234,179,8,0.4)]">
-                  FEATURED
+                  ALL-TIME CLASSIC
                 </span>
                 <span className="px-3 py-1 text-xs font-medium bg-white/10 backdrop-blur-md rounded-sm border border-white/20">
                   {heroMovie.year}
