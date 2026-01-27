@@ -73,35 +73,35 @@ export default async function Home() {
         <div className="relative z-10 px-4 md:px-12 w-full max-w-4xl animate-in fade-in slide-in-from-bottom-10 duration-1000">
           {heroMovie ? (
             <>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="px-3 py-1 text-xs font-bold bg-primary text-black rounded-sm shadow-[0_0_15px_rgba(234,179,8,0.4)]">
-                  ALL-TIME CLASSIC
+              <div className="flex items-center gap-4 mb-8">
+                <span className="px-4 py-1.5 text-xs font-bold tracking-widest uppercase bg-primary text-black rounded-sm shadow-[0_0_20px_rgba(234,179,8,0.6)]">
+                  Masterpiece Collection
                 </span>
-                <span className="px-3 py-1 text-xs font-medium bg-white/10 backdrop-blur-md rounded-sm border border-white/20">
+                <span className="px-4 py-1.5 text-xs font-bold bg-black/40 backdrop-blur-md rounded-sm border border-primary/20 text-primary">
                   {heroMovie.year}
                 </span>
-                <div className="flex items-center gap-1 text-primary text-sm font-semibold">
-                  <Star className="w-4 h-4 fill-primary" />
+                <div className="flex items-center gap-2 text-primary text-sm font-bold">
+                  <Star className="w-4 h-4 fill-primary text-primary" />
                   <span>{heroMovie.rating}</span>
                 </div>
               </div>
 
-              <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-white drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+              <h1 className="text-6xl md:text-8xl font-black font-serif mb-8 tracking-tighter text-white drop-shadow-2xl leading-[0.9]">
                 {heroMovie.title}
               </h1>
 
-              <p className="text-lg md:text-xl text-slate-200 max-w-2xl mb-10 line-clamp-3 leading-relaxed text-shadow-sm">
+              <p className="text-lg md:text-xl text-slate-300 max-w-2xl mb-12 line-clamp-3 leading-relaxed font-light">
                 {heroMovie.description}
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-6">
                 <SmartPlayButton query={heroMovie.title} year={heroMovie.year} variant="hero" />
                 <Link
                   href={`/movie/${heroMovie.id}`}
-                  className="flex items-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-md text-white font-bold rounded-xl border border-white/10 hover:bg-white/20 transition-all hover:scale-105"
+                  className="flex items-center gap-3 px-8 py-4 bg-transparent backdrop-blur-sm text-white font-bold tracking-widest text-sm rounded-sm border border-white/20 hover:border-primary/50 hover:bg-primary/10 hover:text-primary transition-all duration-300 group"
                 >
-                  <Info className="w-5 h-5" />
-                  MORE INFO
+                  <Info className="w-5 h-5 group-hover:text-primary transition-colors" />
+                  DETAILS
                 </Link>
               </div>
             </>

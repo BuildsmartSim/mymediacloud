@@ -13,13 +13,12 @@ export function Navbar() {
         <>
             <nav className="fixed top-0 left-0 right-0 z-50 h-20 px-4 md:px-12 flex items-center justify-between glass-panel border-b-0 rounded-none bg-background/80 backdrop-blur-md">
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 group z-50">
-                    <div className="w-10 h-10 rounded-full border-2 border-primary/20 flex items-center justify-center group-hover:border-primary/80 transition-colors">
-                        <div className="w-6 h-6 rounded-full bg-primary/20 blur-sm absolute" />
-                        <Cloud className="w-5 h-5 text-primary relative z-10" />
+                <Link href="/" className="flex items-center gap-3 group z-50">
+                    <div className="w-10 h-10 flex items-center justify-center border border-primary/20 bg-primary/5 rotate-45 group-hover:bg-primary/10 group-hover:border-primary/50 transition-all duration-500">
+                        <div className="w-5 h-5 bg-primary/20 blur text-primary -rotate-45 font-serif font-black flex items-center justify-center text-xs">O</div>
                     </div>
-                    <span className="text-xl font-bold tracking-widest uppercase text-foreground/90 group-hover:text-white transition-colors">
-                        Cloud<span className="text-primary">Stream</span>
+                    <span className="text-2xl font-black font-serif tracking-tighter text-foreground group-hover:text-primary transition-colors text-glow">
+                        ONYX
                     </span>
                 </Link>
 
