@@ -224,7 +224,6 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
     }
 
     // IDLE (DEFAULT UI)
-    return (
     // IDLE (DEFAULT UI)
     return (
         <div className="flex flex-wrap gap-3 items-center justify-start md:justify-start w-full">
@@ -262,6 +261,5 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
                 </div>
             )}
         </div>
-    );
     );
 }
