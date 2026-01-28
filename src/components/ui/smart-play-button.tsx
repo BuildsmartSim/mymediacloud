@@ -13,7 +13,7 @@ interface SmartPlayButtonProps {
     year?: string;
     season?: number;
     episode?: number;
-    variant?: "default" | "hero";
+    variant?: "default" | "hero" | "card";
     details?: any; // Full TMDB details for X-Ray
 }
 
@@ -165,11 +165,12 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
 
     // --- RENDER ---
     const isHero = variant === "hero";
+    const isCard = variant === "card";
 
     // LOADING STATE
     if (status === "searching" || status === "resolving-auto") {
         return (
-            <button disabled className={`px-8 py-4 font-bold rounded-xl flex items-center gap-3 bg-white/5 text-slate-300 animate-pulse border border-white/10 ${isHero ? "text-lg" : "text-sm"}`}>
+            <button disabled className={`px-8 py-4 font-bold rounded-xl flex items-center gap-3 bg-white/5 text-slate-300 animate-pulse border border-white/10 ${isHero ? "text-lg" : "text-sm"} ${isCard ? "w-full py-2 px-4 justify-center" : ""}`}>
                 <Loader2 className="w-5 h-5 animate-spin text-primary" />
                 {loadingMsg}
             </button>
@@ -228,7 +229,7 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
             {/* Primary: WATCH NOW (Auto-Play) */}
             <button
                 onClick={handleWatchNow}
-                className={`group relative flex items-center gap-3 px-8 py-4 bg-primary text-black font-black font-serif italic tracking-tight rounded-xl hover:bg-primary/90 transition-all shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)] hover:scale-105 active:scale-95 ${isHero ? "text-xl" : "text-sm"}`}
+                className={`group relative flex items-center justify-center gap-3 px-8 py-4 bg-primary text-black font-black font-serif italic tracking-tight rounded-xl hover:bg-primary/90 transition-all shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)] hover:scale-105 active:scale-95 ${isHero ? "text-xl" : "text-sm"} ${isCard ? "w-full py-2 px-4 shadow-none hover:shadow-none font-sans not-italic font-bold" : ""}`}
             >
                 <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Play className="w-6 h-6 fill-black" />

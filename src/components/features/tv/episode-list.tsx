@@ -1,7 +1,8 @@
 "use client";
 
-import { Play, Cloud } from "lucide-react";
+import { Play, Cloud, Info } from "lucide-react";
 import Link from "next/link";
+import { SmartPlayButton } from "@/components/ui/smart-play-button";
 
 interface EpisodeListProps {
     tvId: string;
@@ -38,9 +39,7 @@ export function EpisodeList({ tvId, showName, seasonNumber, episodes }: EpisodeL
                             )}
 
                             {/* Overlay Play Hint */}
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
-                                <Play className="w-8 h-8 text-white fill-current" />
-                            </div>
+
                         </div>
 
                         {/* Content */}
@@ -63,13 +62,24 @@ export function EpisodeList({ tvId, showName, seasonNumber, episodes }: EpisodeL
                             </p>
 
                             {/* Action Button */}
-                            <div className="mt-auto">
+                            {/* Action Buttons */}
+                            <div className="mt-auto flex gap-2">
+                                <div className="flex-1">
+                                    <SmartPlayButton
+                                        query={showName}
+                                        season={seasonNumber}
+                                        episode={ep.episode_number}
+                                        title={`${showName} - ${episodeCode}`}
+                                        tmdbId={Number(tvId)}
+                                        details={ep}
+                                    />
+                                </div>
                                 <Link
                                     href={`/tv/${tvId}/season/${seasonNumber}/episode/${ep.episode_number}`}
-                                    className="w-full py-2 bg-white/10 hover:bg-white/20 border border-white/10 text-slate-300 hover:text-white text-xs font-bold rounded shadow-lg transition-colors flex items-center justify-center gap-2"
+                                    className="px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl text-slate-400 hover:text-white transition-colors flex items-center justify-center"
+                                    title="View Details"
                                 >
-                                    <Play className="w-4 h-4 fill-current" />
-                                    VIEW EPISODE
+                                    <Info className="w-5 h-5" />
                                 </Link>
                             </div>
                         </div>
