@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { Cloud, Check, X, Loader2, Zap, Play, Copy, Download, MonitorPlay, Film } from "lucide-react";
 import { getStreamOptions, addAndResolveStream, StreamOption } from "@/app/actions/scraper";
-import { VideoPlayer } from "./video-player/player";
-import { ErrorBoundary } from "./error-boundary";
+import { usePlayer } from "@/components/providers/player-provider";
 import { addToHistory, addToWatchlist, removeFromWatchlist } from "@/lib/api/trakt"; // Hypothetical imports for now - we'll implement these later if needed here, or handle in player
 
 interface SmartPlayButtonProps {
@@ -26,6 +25,8 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
     const [streamUrl, setStreamUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+
+    const { play } = usePlayer();
 
     // Player Mode: 'embedded' | 'external'
     const [playerMode, setPlayerMode] = useState<'embedded' | 'external'>('embedded');
@@ -102,8 +103,9 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
                     window.location.href = `vlc://${result.url}`;
                     setStatus("ready");
                 } else {
-                    // Start Internal Player
-                    setStatus("playing");
+                    // Start Global Player
+                    play(result.url, title || query, poster, details);
+                    setStatus("found-options"); // Reset UI to options, player opens on top
                 }
 
             } else {
@@ -143,23 +145,6 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
     const baseClass = isHero
         ? "flex items-center gap-2 px-8 py-4 font-bold rounded-xl transition-all shadow-lg"
         : "w-full py-2 text-xs font-bold rounded shadow-lg transition-all flex items-center justify-center gap-2";
-
-    // 1. PLAYING IN BROWSER
-    if (status === "playing" && streamUrl) {
-        return (
-            <ErrorBoundary>
-                <VideoPlayer
-                    url={streamUrl}
-                    poster={poster}
-                    title={title || query}
-                    details={details}
-                    onClose={() => setStatus("ready")}
-                    onTraktProgress={handleTraktProgress}
-                    onTraktComplete={handleTraktComplete}
-                />
-            </ErrorBoundary>
-        );
-    }
 
     // 2. IDLE STATE
     if (status === "idle") {
