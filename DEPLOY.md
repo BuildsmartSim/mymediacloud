@@ -56,3 +56,17 @@ certbot --nginx -d stream.holonomic.uk
 - Visit `https://stream.holonomic.uk`
 - Login with your Admin credentials
 - Verify searching a movie works (IP check)
+
+## 6. Automating Deployment (Optional)
+
+To enable automatic updates when you push to GitHub:
+
+1.  Go to your GitHub Repository -> **Settings** -> **Secrets and variables** -> **Actions**.
+2.  Click **New repository secret**.
+3.  Add the following secrets:
+    *   `DO_HOST`: The IP address of your Droplet (e.g., `123.45.67.89`).
+    *   `DO_USERNAME`: The username you use to SSH (usually `root`).
+    *   `DO_SSH_KEY`: Your private SSH key (the content of your private key file, e.g., `id_rsa`).
+        *   *Note: If you don't have a specific key pair for this, generate one with `ssh-keygen` and add the public key to `~/.ssh/authorized_keys` on the Droplet.*
+
+Once these are set, any push to the `main` branch will trigger the **Deploy to DigitalOcean Droplet** action.
