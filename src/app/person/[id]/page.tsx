@@ -78,26 +78,26 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
                     </div>
 
                     <div className="space-y-4">
-                        <h1 className="text-3xl font-bold text-white">{person.name}</h1>
+                        <h1 className="text-4xl font-black font-serif italic tracking-tighter text-white">{person.name}</h1>
 
-                        <div className="space-y-2 text-sm text-slate-300">
+                        <div className="space-y-2 text-sm text-slate-400 font-medium">
                             {person.birthday && (
                                 <div className="flex items-center gap-2">
-                                    <Calendar className="w-4 h-4 text-primary" />
+                                    <Calendar className="w-4 h-4 text-primary opacity-70" />
                                     <span>Born: {person.birthday}</span>
                                 </div>
                             )}
                             {person.place_of_birth && (
                                 <div className="flex items-center gap-2">
-                                    <MapPin className="w-4 h-4 text-primary" />
+                                    <MapPin className="w-4 h-4 text-primary opacity-70" />
                                     <span>{person.place_of_birth}</span>
                                 </div>
                             )}
                         </div>
 
-                        <div className="space-y-2">
-                            <h2 className="text-white font-bold text-lg">Biography</h2>
-                            <p className="text-slate-400 text-sm leading-relaxed line-clamp-[10]">
+                        <div className="space-y-3 pt-4">
+                            <h2 className="text-white font-serif font-bold text-xl italic border-b border-primary/20 pb-2">Biography</h2>
+                            <p className="text-slate-300 text-sm leading-relaxed line-clamp-[10] font-sans">
                                 {person.biography || "No biography available."}
                             </p>
                         </div>
@@ -105,9 +105,9 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
                 </div>
 
                 {/* RIGHT: Filmography */}
-                <div className="lg:col-span-3 space-y-6">
-                    <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                        <Film className="w-6 h-6 text-primary" />
+                <div className="lg:col-span-3 space-y-8">
+                    <h2 className="text-3xl font-black font-serif italic tracking-tight text-white flex items-center gap-4">
+                        <div className="w-2 h-8 bg-primary -skew-x-12" />
                         Filmography
                     </h2>
 

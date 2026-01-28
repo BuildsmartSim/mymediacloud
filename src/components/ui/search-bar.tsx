@@ -49,7 +49,7 @@ export function SearchBar({ placeholder = "Search movies, shows...", className, 
                     }}
                     placeholder={placeholder}
                     className={cn(
-                        "w-full h-14 pl-12 pr-4 bg-slate-900/50 border border-white/10 rounded-full text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all shadow-xl backdrop-blur-md",
+                        "w-full h-14 pl-12 pr-4 bg-secondary/50 border border-primary/10 rounded-full text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all shadow-2xl backdrop-blur-xl",
                         className
                     )}
                 />

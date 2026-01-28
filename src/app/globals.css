@@ -27,6 +27,9 @@
 
   --color-card: hsl(0 0% 5%);
   --color-card-foreground: hsl(40 20% 98%);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
 }
 
 @utility glass-panel {
@@ -76,4 +79,15 @@
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
+  font-family: var(--font-inter), sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair), serif;
+  letter-spacing: -0.02em;
 }

@@ -48,8 +48,8 @@ export function GenreBar() {
                             href={`/category/${g.slug}`}
                             className="flex-shrink-0 flex items-center gap-2 px-5 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 hover:border-primary/50 hover:text-primary transition-all group whitespace-nowrap"
                         >
-                            {Icon && <Icon className="w-4 h-4 text-slate-400 group-hover:text-primary transition-colors" />}
-                            <span className="text-sm font-medium text-slate-200 group-hover:text-white uppercase tracking-wider">{g.name}</span>
+                            {Icon && <Icon className="w-4 h-4 text-primary opacity-60 group-hover:opacity-100 transition-opacity" />}
+                            <span className="text-sm font-bold text-slate-300 group-hover:text-primary font-serif italic tracking-wide transition-colors">{g.name}</span>
                         </Link>
                     )
                 })}

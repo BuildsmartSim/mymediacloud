@@ -65,7 +65,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
 
                             {/* Title & Meta */}
                             <div className="flex-1 space-y-4">
-                                <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                                <h1 className="text-4xl md:text-6xl font-black font-serif italic tracking-tighter text-white leading-[0.9]">
                                     {movie.title}
                                 </h1>
 
@@ -85,9 +85,9 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
 
                                 {/* Rating */}
                                 <div className="flex items-center gap-2">
-                                    <div className="flex items-center gap-1 px-3 py-1.5 bg-yellow-500/20 rounded-lg">
-                                        <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                                        <span className="text-lg font-bold text-white">{movie.vote_average?.toFixed(1)}</span>
+                                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 rounded-sm border border-primary/20 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                                        <Star className="w-5 h-5 text-primary fill-primary" />
+                                        <span className="text-xl font-black text-white font-serif italic">{movie.vote_average?.toFixed(1)}</span>
                                     </div>
                                     <span className="text-sm text-slate-400">
                                         ({movie.vote_count?.toLocaleString()} votes)
@@ -106,9 +106,10 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                         </div>
 
                         {/* Synopsis */}
-                        <div className="space-y-3">
-                            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                                <Film className="w-5 h-5" /> Synopsis
+                        <div className="space-y-4">
+                            <h2 className="text-xl font-black font-serif italic tracking-tight text-white flex items-center gap-3">
+                                <span className="w-1.5 h-6 bg-primary -skew-x-12" />
+                                Synopsis
                             </h2>
                             <p className="text-slate-300 leading-relaxed text-sm">
                                 {movie.overview || "No synopsis available."}
@@ -163,9 +164,10 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
 
                         {/* Cast */}
                         {cast.length > 0 && (
-                            <div className="space-y-3 pt-4 border-t border-white/10">
-                                <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                                    <User className="w-5 h-5" /> Top Cast
+                            <div className="space-y-4 pt-6 border-t border-white/5">
+                                <h2 className="text-xl font-black font-serif italic tracking-tight text-white flex items-center gap-3">
+                                    <span className="w-1.5 h-6 bg-primary -skew-x-12" />
+                                    Top Cast
                                 </h2>
                                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
                                     {cast.map((actor: any) => (
@@ -193,8 +195,9 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                     {/* RIGHT: Torrent Sources */}
                     <div className="lg:sticky lg:top-28 lg:self-start">
                         <div className="bg-black/20 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl">
-                            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                                🎬 Stream This Movie
+                            <h2 className="text-2xl font-black font-serif italic tracking-tight text-white mb-6 flex items-center gap-3">
+                                <span className="w-2 h-8 bg-primary -skew-x-12" />
+                                Stream Selection
                             </h2>
                             <SmartPlayButton
                                 query={movie.title}

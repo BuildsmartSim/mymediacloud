@@ -87,18 +87,18 @@ export function PersonCreditsGrid({ credits, personDept }: PersonCreditsGridProp
                 <div className="flex p-1 bg-black/40 rounded-lg">
                     <button
                         onClick={() => { setActiveTab("movie"); setDecadeFilter("all"); }}
-                        className={`px-6 py-2 rounded-md text-sm font-bold transition-all ${activeTab === "movie"
-                                ? "bg-primary text-black shadow-lg"
-                                : "text-slate-400 hover:text-white"
+                        className={`px-6 py-2 rounded-sm text-sm font-black transition-all font-serif italic tracking-wide ${activeTab === "movie"
+                            ? "bg-primary text-black shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                            : "text-slate-400 hover:text-white"
                             }`}
                     >
                         MOVIES
                     </button>
                     <button
                         onClick={() => { setActiveTab("tv"); setDecadeFilter("all"); }}
-                        className={`px-6 py-2 rounded-md text-sm font-bold transition-all ${activeTab === "tv"
-                                ? "bg-primary text-black shadow-lg"
-                                : "text-slate-400 hover:text-white"
+                        className={`px-6 py-2 rounded-sm text-sm font-black transition-all font-serif italic tracking-wide ${activeTab === "tv"
+                            ? "bg-primary text-black shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                            : "text-slate-400 hover:text-white"
                             }`}
                     >
                         TV SHOWS
@@ -140,13 +140,14 @@ export function PersonCreditsGrid({ credits, personDept }: PersonCreditsGridProp
 
             {/* Content Grid */}
             <div className="space-y-4">
-                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <h3 className="text-2xl font-black text-white flex items-center gap-3 font-serif italic tracking-tight">
+                    <span className="w-1.5 h-6 bg-primary -skew-x-12" />
                     {activeTab === "movie" ? "Movies" : "TV Series"}
-                    <span className="px-2 py-0.5 bg-white/10 rounded-full text-xs text-slate-400">
+                    <span className="px-2 py-0.5 bg-primary/20 rounded-sm text-[10px] text-primary border border-primary/20 font-sans font-bold not-italic tracking-normal">
                         {finalCredits.length}
                     </span>
                     {decadeFilter !== "all" && (
-                        <span className="text-sm font-normal text-slate-400">from the {decadeFilter}s</span>
+                        <span className="text-sm font-normal text-slate-400 font-sans not-italic tracking-normal">from the {decadeFilter}s</span>
                     )}
                 </h3>
 
@@ -169,12 +170,12 @@ export function PersonCreditsGrid({ credits, personDept }: PersonCreditsGridProp
                                     loading="lazy"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
-                                    <h3 className="text-white font-bold text-sm line-clamp-2">{credit.title || credit.name}</h3>
+                                    <h3 className="text-white font-serif font-black italic text-sm line-clamp-2 leading-tight">{credit.title || credit.name}</h3>
 
                                     <div className="flex justify-between items-end mt-2">
                                         <div className="flex flex-col">
-                                            <div className="flex items-center gap-1 text-yellow-500 text-xs">
-                                                <Star className="w-3 h-3 fill-current" />
+                                            <div className="flex items-center gap-1 text-primary text-xs font-bold">
+                                                <Star className="w-3 h-3 fill-primary" />
                                                 <span>{credit.vote_average?.toFixed(1)}</span>
                                             </div>
                                             <span className="text-[10px] text-slate-400">
@@ -190,9 +191,9 @@ export function PersonCreditsGrid({ credits, personDept }: PersonCreditsGridProp
 
                                 {/* Badge */}
                                 <div className="absolute top-2 right-2 flex flex-col items-end gap-1">
-                                    <div className="bg-black/60 backdrop-blur-md px-2 py-1 rounded-md flex items-center gap-1">
-                                        <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                                        <span className="text-xs font-bold text-white">{credit.vote_average?.toFixed(1)}</span>
+                                    <div className="bg-black/80 backdrop-blur-md px-2 py-1 rounded-sm flex items-center gap-1 border border-primary/20">
+                                        <Star className="w-3 h-3 text-primary fill-primary" />
+                                        <span className="text-xs font-bold text-white font-sans">{credit.vote_average?.toFixed(1)}</span>
                                     </div>
                                 </div>
                             </Link>

@@ -50,8 +50,8 @@ export function MovieRow({ title, movies, isSeries, categorySlug, viewAllLink }:
     return (
         <div className="py-6 space-y-4">
             <div className="flex items-center justify-between px-4 md:px-12">
-                <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                    <span className="w-1 h-6 bg-primary rounded-full" />
+                <h2 className="text-2xl font-black text-white flex items-center gap-3 font-serif italic tracking-tight">
+                    <span className="w-1.5 h-8 bg-primary -skew-x-12" />
                     {title}
                 </h2>
                 {targetLink && (
