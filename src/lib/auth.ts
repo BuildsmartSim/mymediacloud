@@ -29,6 +29,30 @@ export const authOptions: NextAuthOptions = {
                     return { id: "2", name: "Guest", email: guestEmail, role: "guest" };
                 }
 
+                // Check ADDITIONAL_USERS
+                // Format: "email:pass;email2:pass2"
+                const additionalUsersEnv = process.env.ADDITIONAL_USERS || "";
+                if (additionalUsersEnv) {
+                    const extraUsers = additionalUsersEnv.split(';').map(u => {
+                        const [e, p] = u.split(':');
+                        return { email: e?.trim(), password: p?.trim() };
+                    });
+
+                    const match = extraUsers.find(u =>
+                        u.email === credentials?.email &&
+                        u.password === credentials?.password
+                    );
+
+                    if (match && match.email) {
+                        return {
+                            id: `guest-${match.email}`,
+                            name: "Guest",
+                            email: match.email,
+                            role: "guest"
+                        };
+                    }
+                }
+
                 return null;
             }
         })
