@@ -44,7 +44,7 @@ export function XRayOverlay({ details, onClose }: XRayOverlayProps) {
                     {/* CAST TAB */}
                     {activeTab === "cast" && (
                         <div className="flex gap-6">
-                            {details.credits?.cast?.slice(0, 15).map((actor: any) => (
+                            {(details.credits?.cast || []).slice(0, 15).map((actor: any) => (
                                 <div key={actor.id} className="group relative flex-shrink-0 w-32 flex flex-col gap-2 cursor-pointer">
                                     <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all relative">
                                         {actor.profile_path ? (

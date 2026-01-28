@@ -212,7 +212,7 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
                             </div>
 
                             {/* Tags Row */}
-                            {opt.tags && opt.tags.length > 0 && (
+                            {Array.isArray(opt.tags) && opt.tags.length > 0 && (
                                 <div className="flex flex-wrap gap-1 pl-1">
                                     {opt.tags.map(tag => (
                                         <span key={tag} className="text-[10px] px-1 rounded border border-white/10 text-slate-400 bg-black/20">

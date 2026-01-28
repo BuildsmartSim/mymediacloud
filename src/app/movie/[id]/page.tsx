@@ -201,6 +201,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                                 year={year}
                                 variant="hero"
                                 tmdbId={movie.id}
+                                details={movie}
                             />
 
                             <div className="mt-4">
