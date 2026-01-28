@@ -30,7 +30,7 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
         const art = new Artplayer({
             container: artRef.current,
             url: url,
-            poster: poster,
+            poster: poster || "",
             volume: 1,
             isLive: false,
             muted: false,
@@ -149,13 +149,13 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
                 </div>
             </div>
 
-            {/* X-Ray Overlay Drawer - DISABLED FOR DEBUGGING */}
-            {/* <div className={cn(
+            {/* X-Ray Overlay Drawer */}
+            <div className={cn(
                 "absolute bottom-0 left-0 right-0 transition-transform duration-500 ease-out z-[110]",
                 showOverlay ? "translate-y-0" : "translate-y-full"
             )}>
                 <XRayOverlay details={details} onClose={() => setShowOverlay(false)} />
-            </div> */}
+            </div>
 
             {/* Toggle Overlay Button (Visible when controls hidden usually, or custom UI) */}
             {!showOverlay && (
