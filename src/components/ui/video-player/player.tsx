@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Artplayer from "artplayer";
 import Hls from "hls.js";
 import { X, Maximize, Minimize, Settings, SkipForward, Play, Pause, Cast } from "lucide-react";
@@ -127,14 +128,25 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [onClose]);
 
-    return (
-        <div className="fixed inset-0 z-[100] bg-black animate-in fade-in duration-300">
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
+
+    // ... (rest of effects)
+
+    if (!mounted) return null;
+
+    return createPortal(
+        <div className="fixed inset-0 z-[2000] bg-black animate-in fade-in duration-300">
             {/* Player Container */}
             <div ref={artRef} className="w-full h-full" />
 
             {/* Custom Top Bar (fades out when playing) */}
             <div className={cn(
-                "absolute top-0 left-0 right-0 p-6 flex justify-between items-start bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-300 pointer-events-none",
+                "absolute top-0 left-0 right-0 p-6 flex justify-between items-start bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-300 pointer-events-none z-[2010]",
                 isPlaying && !showOverlay ? "opacity-0" : "opacity-100"
             )}>
                 <div className="pointer-events-auto">
@@ -151,7 +163,7 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
 
             {/* X-Ray Overlay Drawer */}
             <div className={cn(
-                "absolute bottom-0 left-0 right-0 transition-transform duration-500 ease-out z-[110]",
+                "absolute bottom-0 left-0 right-0 transition-transform duration-500 ease-out z-[2020]",
                 showOverlay ? "translate-y-0" : "translate-y-full"
             )}>
                 <XRayOverlay details={details} onClose={() => setShowOverlay(false)} />
@@ -160,7 +172,7 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
             {/* Toggle Overlay Button (Visible when controls hidden usually, or custom UI) */}
             {!showOverlay && (
                 <div className={cn(
-                    "absolute bottom-8 right-8 transition-opacity duration-300",
+                    "absolute bottom-8 right-8 transition-opacity duration-300 z-[2010]",
                     isPlaying ? "opacity-0 hover:opacity-100" : "opacity-100"
                 )}>
                     <button
@@ -171,6 +183,7 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
                     </button>
                 </div>
             )}
-        </div>
+        </div>,
+        document.body
     );
 }
