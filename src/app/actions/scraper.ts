@@ -75,7 +75,7 @@ async function tryResolve(magnet: string, targetFilename?: string): Promise<{
         const status = info?.status || 'unknown';
         console.log("[Scraper] Status:", status);
 
-        if (status === 'downloaded' && info?.links?.length > 0) {
+        if (status === 'downloaded' && info?.links && info.links.length > 0) {
             let targetLink = info.links[0];
 
             // Logic to select specific file if targetFilename provided
