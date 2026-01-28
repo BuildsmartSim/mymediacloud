@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { Check, LogOut, ExternalLink } from "lucide-react";
-import { SetupSection } from "./setup-section";
+import { ApiKeyForm } from "@/components/features/settings/api-key-form";
 
 export default async function SettingsPage() {
     const cookieStore = await cookies();
@@ -57,7 +57,10 @@ export default async function SettingsPage() {
                 </div>
 
                 {/* PLAYER SETUP SECTION */}
-                <SetupSection />
+                <ApiKeyForm
+                    hasKey={!!cookieStore.get("rd_api_key")}
+                    currentService={cookieStore.get("debrid_service")?.value}
+                />
 
                 {/* ABOUT SECTION */}
                 <div className="bg-slate-900/50 border border-white/5 rounded-2xl p-6 backdrop-blur-sm text-slate-400 text-sm">
