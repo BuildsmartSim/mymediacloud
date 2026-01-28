@@ -225,14 +225,16 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
 
     // IDLE (DEFAULT UI)
     return (
-        <div className="flex items-center gap-3">
+    // IDLE (DEFAULT UI)
+    return (
+        <div className="flex flex-wrap gap-3 items-center justify-start md:justify-start w-full">
             {/* Primary: WATCH NOW (Auto-Play) */}
             <button
                 onClick={handleWatchNow}
-                className={`group relative flex items-center justify-center gap-3 px-8 py-4 bg-primary text-black font-black font-serif italic tracking-tight rounded-xl hover:bg-primary/90 transition-all shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)] hover:scale-105 active:scale-95 ${isHero ? "text-xl" : "text-sm"} ${isCard ? "w-full py-2 px-4 shadow-none hover:shadow-none font-sans not-italic font-bold" : ""}`}
+                className={`group relative flex-1 md:flex-none flex items-center justify-center gap-2 md:gap-3 px-6 py-3 md:px-8 md:py-4 bg-primary text-black font-black font-serif italic tracking-tight rounded-xl hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)] md:shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)] hover:scale-105 active:scale-95 whitespace-nowrap ${isHero ? "text-lg md:text-xl min-w-[160px]" : "text-sm"} ${isCard ? "w-full py-2 px-4 shadow-none hover:shadow-none font-sans not-italic font-bold" : ""}`}
             >
                 <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                <Play className="w-6 h-6 fill-black" />
+                <Play className="w-5 h-5 md:w-6 md:h-6 fill-black" />
                 WATCH NOW
             </button>
 
@@ -240,25 +242,26 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
             <button
                 onClick={handleVLC}
                 title="Watch in VLC (High Quality)"
-                className="p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-300 hover:text-white transition-all hover:scale-105 active:scale-95 group"
+                className="p-3 md:p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-300 hover:text-white transition-all hover:scale-105 active:scale-95 group flex-none"
             >
-                <Film className="w-6 h-6 group-hover:text-orange-400 transition-colors" />
+                <Film className="w-5 h-5 md:w-6 md:h-6 group-hover:text-orange-400 transition-colors" />
             </button>
 
             {/* Secondary: Download */}
             <button
                 onClick={handleDownload}
                 title="Download to Library"
-                className="p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-300 hover:text-white transition-all hover:scale-105 active:scale-95 group"
+                className="p-3 md:p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 text-slate-300 hover:text-white transition-all hover:scale-105 active:scale-95 group flex-none"
             >
-                <Download className="w-6 h-6 group-hover:text-blue-400 transition-colors" />
+                <Download className="w-5 h-5 md:w-6 md:h-6 group-hover:text-blue-400 transition-colors" />
             </button>
 
             {error && (
-                <div className="absolute top-full mt-2 left-0 bg-red-500/10 border border-red-500/20 text-red-500 px-3 py-1 rounded text-xs">
+                <div className="w-full md:w-auto md:absolute md:top-full md:mt-2 md:left-0 bg-red-500/10 border border-red-500/20 text-red-500 px-3 py-1 rounded text-xs text-center md:text-left">
                     {error}
                 </div>
             )}
         </div>
+    );
     );
 }
