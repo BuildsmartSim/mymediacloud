@@ -23,6 +23,7 @@ export interface ParsedTorrent {
     size: string;
     seeds: number;
     relevanceScore: number;
+    tags: string[];
 }
 
 // Parse torrent name to extract metadata
@@ -32,6 +33,7 @@ export function parseTorrentName(name: string): {
     quality: ParsedTorrent['quality'];
     source: ParsedTorrent['source'];
     codec: ParsedTorrent['codec'];
+    tags: string[];
 } {
     // Normalize separators
     const normalized = name.replace(/\./g, ' ').replace(/_/g, ' ');
@@ -61,6 +63,20 @@ export function parseTorrentName(name: string): {
     if (/x265|HEVC|H\.?265/i.test(name)) codec = 'x265';
     else if (/x264|H\.?264/i.test(name)) codec = 'x264';
 
+    // Extract Tags (HDR, Atmos, etc)
+    const tags: string[] = [];
+    if (/HDR10\+|HDR10Plus/i.test(name)) tags.push('HDR10+');
+    else if (/HDR/i.test(name)) tags.push('HDR');
+
+    if (/DV|Dolby\s*Vision/i.test(name)) tags.push('DV');
+    if (/Atmos/i.test(name)) tags.push('Atmos');
+    if (/TrueHD/i.test(name)) tags.push('TrueHD');
+    if (/DTS-?HD|DTS-?X/i.test(name)) tags.push('DTS-X');
+    else if (/DTS/i.test(name)) tags.push('DTS');
+
+    if (/Remux/i.test(name)) tags.push('REMUX');
+    if (/IMAX/i.test(name)) tags.push('IMAX');
+
     // Extract title (everything before the year or quality indicators)
     let title = normalized;
     if (year) {
@@ -76,7 +92,7 @@ export function parseTorrentName(name: string): {
     // Clean up title
     title = title.replace(/\s+/g, ' ').trim();
 
-    return { title, year, quality, source, codec };
+    return { title, year, quality, source, codec, tags };
 }
 
 // Calculate fuzzy match score between two strings
@@ -269,6 +285,7 @@ export async function searchTorrents(query: string, expectedYear?: number): Prom
                     quality: info.quality,
                     source: info.source,
                     codec: info.codec,
+                    tags: info.tags,
                     hash: t.info_hash,
                     size: formatSize(t.size),
                     seeds,

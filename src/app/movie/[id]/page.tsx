@@ -1,6 +1,7 @@
 import { getMovieDetails, getMovieCredits, getImageUrl } from "@/lib/api/tmdb";
 import { SmartPlayButton } from "@/components/ui/smart-play-button";
 import { BookmarkButton } from "@/components/features/trakt/bookmark-button";
+import { BackButton } from "@/components/ui/back-button";
 import { Star, Clock, Calendar, User, Film } from "lucide-react";
 import Link from "next/link";
 
@@ -33,7 +34,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
     const genres = movie.genres?.slice(0, 3).map((g: any) => g.name) || [];
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen">
             {/* Backdrop */}
             <div
                 className="absolute top-0 left-0 right-0 h-[75vh] bg-cover bg-center"
@@ -45,9 +46,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
             {/* Content */}
             <div className="relative z-10 pt-28 px-4 md:px-12 pb-12">
                 {/* Back button */}
-                <Link href="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-8 text-sm">
-                    ← Back to Movies
-                </Link>
+                <BackButton label="Back to Library" />
 
                 {/* Two Column Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -201,6 +200,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                                 query={movie.title}
                                 year={year}
                                 variant="hero"
+                                tmdbId={movie.id}
                             />
 
                             <div className="mt-4">

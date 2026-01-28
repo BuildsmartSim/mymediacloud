@@ -13,6 +13,7 @@ export interface StreamOption {
     source: string;
     year: number | null;
     score: number;
+    tags: string[];
 }
 
 export async function getStreamOptions(query: string, year?: number): Promise<StreamOption[]> {
@@ -39,7 +40,8 @@ export async function getStreamOptions(query: string, year?: number): Promise<St
             hash: t.hash,
             source: t.source,
             year: t.parsedYear,
-            score: t.relevanceScore
+            score: t.relevanceScore,
+            tags: t.tags
         };
     });
 

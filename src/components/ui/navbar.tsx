@@ -33,6 +33,7 @@ export function Navbar() {
                 <div className="hidden md:flex items-center gap-6 font-medium text-sm tracking-wide text-muted-foreground/80">
                     <Link href="/" className="hover:text-primary transition-colors hover:text-glow uppercase">Movies</Link>
                     <Link href="/tv" className="hover:text-primary transition-colors hover:text-glow uppercase">Series</Link>
+                    <Link href="/library" className="hover:text-primary transition-colors hover:text-glow uppercase">Library</Link>
                     <Link href="/settings" className="hover:text-primary transition-colors hover:text-glow uppercase">Settings</Link>
                 </div>
 
@@ -92,6 +93,14 @@ export function Navbar() {
                     >
                         <Tv className="w-5 h-5" />
                         <span className="font-medium">Series</span>
+                    </Link>
+                    <Link
+                        href="/library"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 text-slate-300 hover:text-white transition-colors"
+                    >
+                        <Cloud className="w-5 h-5" />
+                        <span className="font-medium">Library</span>
                     </Link>
                     <Link
                         href="/settings"

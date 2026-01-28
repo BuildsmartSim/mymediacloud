@@ -88,7 +88,7 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
 
         try {
             const target = (selectedOption as any).targetFilename;
-            const result = await addAndResolveStream(selectedOption.magnet, options);
+            const result = await addAndResolveStream(selectedOption.magnet, options, target);
 
             if (result.success && result.url) {
                 setStreamUrl(result.url);
@@ -203,12 +203,24 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
                 <div className={`overflow-y-auto space-y-1 pr-2 mb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent ${isHero ? "max-h-96" : "max-h-64"}`}>
                     {options.map((opt, i) => (
                         <div key={i} onClick={() => setSelectedOption(opt)}
-                            className={`px-3 py-2 rounded flex items-center justify-between cursor-pointer border ${selectedOption === opt ? 'bg-primary/10 border-primary/30 text-primary' : 'border-transparent hover:bg-white/5 text-muted-foreground'}`}>
-                            <div className="flex items-center gap-3 overflow-hidden">
-                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-sm ${opt.quality === '2160p' ? 'bg-primary text-black' : 'bg-muted text-muted-foreground border border-white/10'}`}>{opt.quality}</span>
-                                <span className="text-xs truncate">{opt.title}</span>
+                            className={`px-3 py-2 rounded flex flex-col gap-1 cursor-pointer border ${selectedOption === opt ? 'bg-primary/10 border-primary/30 text-primary' : 'border-transparent hover:bg-white/5 text-muted-foreground'}`}>
+
+                            <div className="flex items-center gap-2 overflow-hidden w-full">
+                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex-shrink-0 ${opt.quality === '2160p' ? 'bg-primary text-black' : 'bg-muted text-muted-foreground border border-white/10'}`}>{opt.quality}</span>
+                                <span className="text-xs truncate font-medium flex-1">{opt.title}</span>
+                                <span className="text-[10px] font-mono opacity-50 whitespace-nowrap">{opt.size}</span>
                             </div>
-                            <span className="text-xs font-mono opacity-50">{opt.size}</span>
+
+                            {/* Tags Row */}
+                            {opt.tags && opt.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-1 pl-1">
+                                    {opt.tags.map(tag => (
+                                        <span key={tag} className="text-[10px] px-1 rounded border border-white/10 text-slate-400 bg-black/20">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
