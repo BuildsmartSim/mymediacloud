@@ -24,3 +24,4 @@ services:
       - GUEST_PASSWORD=${GUEST_PASSWORD}
     volumes:
       - ./.next/cache:/app/.next/cache
+      - ./downloads:/app/downloads
