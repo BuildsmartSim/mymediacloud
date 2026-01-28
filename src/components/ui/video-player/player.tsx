@@ -142,16 +142,27 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
     return createPortal(
         <div className="fixed inset-0 z-[2000] bg-black animate-in fade-in duration-300">
             {/* Player Container */}
-            <div ref={artRef} className="w-full h-full" />
+            <div ref={artRef} className="w-full h-full absolute inset-0 z-0" />
 
-            {/* Custom Top Bar (fades out when playing) */}
+            {/* Manual Play Button Overlay (if blocked or paused) */}
+            {!isPlaying && !showOverlay && (
+                <div className="absolute inset-0 flex items-center justify-center z-[2005] pointer-events-none">
+                    <div className="w-20 h-20 bg-black/50 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20 animate-pulse pointer-events-auto cursor-pointer group"
+                        onClick={() => playerRef.current?.play()}>
+                        <Play className="w-8 h-8 text-white fill-current group-hover:scale-110 transition-transform" />
+                    </div>
+                </div>
+            )}
+
+            {/* Custom Top Bar */}
             <div className={cn(
                 "absolute top-0 left-0 right-0 p-6 flex justify-between items-start bg-gradient-to-b from-black/80 to-transparent transition-opacity duration-300 pointer-events-none z-[2010]",
                 isPlaying && !showOverlay ? "opacity-0" : "opacity-100"
             )}>
                 <div className="pointer-events-auto">
-                    <button onClick={onClose} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-colors">
+                    <button onClick={onClose} className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-colors flex items-center gap-2 pr-4">
                         <X className="w-6 h-6" />
+                        <span className="text-xs font-bold">CLOSE</span>
                     </button>
                 </div>
 
@@ -169,7 +180,7 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
                 <XRayOverlay details={details} onClose={() => setShowOverlay(false)} />
             </div>
 
-            {/* Toggle Overlay Button (Visible when controls hidden usually, or custom UI) */}
+            {/* X-Ray Toggle (Visible when controls hidden) */}
             {!showOverlay && (
                 <div className={cn(
                     "absolute bottom-8 right-8 transition-opacity duration-300 z-[2010]",
@@ -177,8 +188,9 @@ export function VideoPlayer({ url, poster, title, details, onClose, onTraktProgr
                 )}>
                     <button
                         onClick={() => setShowOverlay(true)}
-                        className="px-4 py-2 bg-black/50 hover:bg-black/70 backdrop-blur-md border border-white/10 rounded-full text-xs font-bold text-white uppercase tracking-widest transition-all hover:scale-105"
+                        className="px-6 py-2 bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/10 rounded-full text-xs font-bold text-white uppercase tracking-widest transition-all hover:scale-105 flex items-center gap-2"
                     >
+                        <Cast className="w-4 h-4" />
                         X-Ray
                     </button>
                 </div>
