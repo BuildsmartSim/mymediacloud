@@ -2,6 +2,8 @@ import { getCloudMedia } from "@/lib/api/rd";
 import { Download, FileVideo, HardDrive } from "lucide-react";
 import { PlayButton } from "@/components/ui/play-button";
 
+export const dynamic = 'force-dynamic';
+
 export default async function CloudPage() {
     const media = await getCloudMedia();
 
