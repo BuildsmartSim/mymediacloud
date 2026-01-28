@@ -57,16 +57,22 @@ certbot --nginx -d stream.holonomic.uk
 - Login with your Admin credentials
 - Verify searching a movie works (IP check)
 
-## 6. Automating Deployment (Optional)
+## 6. Automated Deployment (GitHub Actions)
 
-To enable automatic updates when you push to GitHub:
+Your repository includes a workflow to automatically deploy changes to your server whenever you push to the `main` branch.
 
-1.  Go to your GitHub Repository -> **Settings** -> **Secrets and variables** -> **Actions**.
-2.  Click **New repository secret**.
-3.  Add the following secrets:
-    *   `DO_HOST`: The IP address of your Droplet (e.g., `123.45.67.89`).
-    *   `DO_USERNAME`: The username you use to SSH (usually `root`).
-    *   `DO_SSH_KEY`: Your private SSH key (the content of your private key file, e.g., `id_rsa`).
-        *   *Note: If you don't have a specific key pair for this, generate one with `ssh-keygen` and add the public key to `~/.ssh/authorized_keys` on the Droplet.*
+**Required GitHub Secrets:**
+Go to **Settings** > **Secrets and variables** > **Actions** in your GitHub repository and add:
 
-Once these are set, any push to the `main` branch will trigger the **Deploy to DigitalOcean Droplet** action.
+| Secret Name | Value |
+|-------------|-------|
+| `DO_HOST` | Your Droplet IP Address (e.g., `164.x.x.x`) |
+| `DO_USERNAME` | `root` (or your user) |
+| `DO_SSH_KEY` | Your **Private** SSH Key (starts with `-----BEGIN OPENSSH PRIVATE KEY-----`) |
+
+**How it works:**
+1. You push code to GitHub.
+2. GitHub logs into your Droplet via SSH.
+3. It runs `git pull` and `docker-compose up -d --build`.
+
+
