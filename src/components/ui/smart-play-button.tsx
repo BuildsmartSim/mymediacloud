@@ -143,17 +143,17 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
                 if (mode === 'external') {
                     window.location.href = `vlc://${result.url}`;
                 } else {
-                    // Trigger Download API
-                    setLoadingMsg("Starting download...");
-                    await fetch('/api/download', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            url: result.url,
-                            filename: result.filename || `${query}.mp4`
-                        })
-                    });
-                    alert("Download started on server!"); // Can replace with toast later
+                    // DIRECT BROWSER DOWNLOAD
+                    // We simply open the URL. Real-Debrid headers usually force download for these links.
+                    // If not, the browser will try to play it, but users can "Save As".
+                    const link = document.createElement('a');
+                    link.href = result.url;
+                    link.setAttribute('download', result.filename || `${query}.mp4`);
+                    link.setAttribute('target', '_blank'); // Determine if needs new tab
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
                     setStatus("idle");
                 }
             }
