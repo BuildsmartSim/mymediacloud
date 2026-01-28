@@ -54,6 +54,7 @@ async function tryResolve(magnet: string, targetFilename?: string): Promise<{
     success: boolean;
     url?: string;
     error?: string;
+    filename?: string;
     status?: string;
     torrentId?: string
 }> {
@@ -93,7 +94,9 @@ async function tryResolve(magnet: string, targetFilename?: string): Promise<{
 
             const unrestricted = await unrestrictLink(targetLink);
             if (unrestricted?.download) {
-                return { success: true, url: unrestricted.download, status, torrentId };
+                // Find filename from info.files if possible, or unrestricted info
+                const filename = info.files?.find((f: any) => f.id === targetLink.split('/').pop())?.path || unrestricted.filename || "video.mp4";
+                return { success: true, url: unrestricted.download, filename, status, torrentId };
             }
         }
 
@@ -108,50 +111,78 @@ async function tryResolve(magnet: string, targetFilename?: string): Promise<{
 export async function addAndResolveStream(
     magnet: string,
     allOptions?: StreamOption[],
-    targetFilename?: string
+    targetFilename?: string,
+    mode: 'embedded' | 'external' = 'external'
 ): Promise<{
     success: boolean;
     url?: string;
+    filename?: string;
     error?: string;
     torrentId?: string;
     status?: string;
     triedCount?: number;
 }> {
-    console.log("[Scraper] Attempting to resolve stream...", targetFilename ? `Target: ${targetFilename}` : '');
+    console.log(`[Scraper] Attempting to resolve stream (Mode: ${mode})...`, targetFilename ? `Target: ${targetFilename}` : '');
 
-    // First, try the selected magnet
-    const result = await tryResolve(magnet, targetFilename);
+    // Helper to check compatibility
+    const isCompatible = (filename?: string) => {
+        if (mode === 'external') return true; // External plays everything
+        if (!filename) return true; // Optimistic
+        return !filename.toLowerCase().endsWith('.mkv');
+    };
+
+    // 1. Try the user-selected magnet first
+    let result = await tryResolve(magnet, targetFilename);
 
     if (result.success) {
-        console.log("[Scraper] ✓ Got stream URL on first try!");
-        return result;
+        if (isCompatible(result.filename)) {
+            console.log("[Scraper] ✓ Got compatible stream on first try!", result.filename);
+            return result;
+        } else {
+            console.log("[Scraper] ⚠️ First result was MKV, skipping for embedded player...");
+        }
     }
 
-    // If failed and we have alternatives, try them (sorted by relevance score)
+    // 2. If failed OR incompatible, try alternatives
     if (allOptions && allOptions.length > 1) {
-        console.log("[Scraper] First torrent not cached, trying alternatives...");
+        console.log("[Scraper] Searching alternatives for better match...");
 
-        // Try up to 4 more alternatives
-        for (let i = 1; i < Math.min(5, allOptions.length); i++) {
+        // Try up to 10 alternatives to find a working MP4
+        const limit = Math.min(10, allOptions.length);
+
+        for (let i = 0; i < limit; i++) {
+            // Skip the one we just tried (if it was the first one)
+            if (allOptions[i].magnet === magnet && !result.success) continue;
+
             const alt = allOptions[i];
-            console.log(`[Scraper] Trying #${i + 1}:`, alt.quality, alt.source, `(score: ${alt.score})`);
+
+            // Optimization: If title says HEVC/x265 and we are embedded, maybe lower priority? 
+            // For now, let's just resolve and check extension.
+
+            console.log(`[Scraper] Trying #${i + 1}:`, alt.quality, alt.source);
 
             const altResult = await tryResolve(alt.magnet, targetFilename);
+
             if (altResult.success) {
-                console.log("[Scraper] ✓ Found cached alternative!");
-                return { ...altResult, triedCount: i + 1 };
+                if (isCompatible(altResult.filename)) {
+                    console.log("[Scraper] ✓ Found compatible alternative!", altResult.filename);
+                    return { ...altResult, triedCount: i + 1 };
+                } else {
+                    console.log(`[Scraper] ⚠️ Alternative #${i + 1} is MKV, skipping...`);
+                }
             }
         }
     }
 
+    // If we're here, we failed to find a compatible stream
     return {
         success: false,
-        error: result.status === 'downloading' || result.status === 'queued'
-            ? "Not cached on Real-Debrid. Try later or pick a different quality."
-            : result.error || "No cached source found",
+        error: mode === 'embedded'
+            ? "No browser-compatible (MP4) streams found. Try 'External VLC'."
+            : "No cached stream found.",
         status: result.status,
         torrentId: result.torrentId,
-        triedCount: allOptions ? Math.min(5, allOptions.length) : 1
+        triedCount: allOptions ? Math.min(10, allOptions.length) : 1
     };
 }
 

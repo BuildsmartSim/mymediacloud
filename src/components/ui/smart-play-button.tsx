@@ -89,7 +89,10 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
 
         try {
             const target = (selectedOption as any).targetFilename;
-            const result = await addAndResolveStream(selectedOption.magnet, options, target);
+
+            // Pass the mode ('embedded' or 'external') to the resolver
+            // It will smart-filter MKVs for embedded mode
+            const result = await addAndResolveStream(selectedOption.magnet, options, target, mode);
 
             if (result.success && result.url) {
                 setStreamUrl(result.url);
