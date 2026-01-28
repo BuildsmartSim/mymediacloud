@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Cloud, Check, X, Loader2, Zap, Play, Copy, Download, MonitorPlay, Film } from "lucide-react";
 import { getStreamOptions, addAndResolveStream, StreamOption } from "@/app/actions/scraper";
 import { VideoPlayer } from "./video-player/player";
+import { ErrorBoundary } from "./error-boundary";
 import { addToHistory, addToWatchlist, removeFromWatchlist } from "@/lib/api/trakt"; // Hypothetical imports for now - we'll implement these later if needed here, or handle in player
 
 interface SmartPlayButtonProps {
@@ -143,15 +144,17 @@ export function SmartPlayButton({ query, tmdbId, title, poster, year, season, ep
     // 1. PLAYING IN BROWSER
     if (status === "playing" && streamUrl) {
         return (
-            <VideoPlayer
-                url={streamUrl}
-                poster={poster}
-                title={title || query}
-                details={details}
-                onClose={() => setStatus("ready")}
-                onTraktProgress={handleTraktProgress}
-                onTraktComplete={handleTraktComplete}
-            />
+            <ErrorBoundary>
+                <VideoPlayer
+                    url={streamUrl}
+                    poster={poster}
+                    title={title || query}
+                    details={details}
+                    onClose={() => setStatus("ready")}
+                    onTraktProgress={handleTraktProgress}
+                    onTraktComplete={handleTraktComplete}
+                />
+            </ErrorBoundary>
         );
     }
 
