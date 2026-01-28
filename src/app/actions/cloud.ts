@@ -35,7 +35,7 @@ export async function findInCloud(query: string) {
                 id: t.id,
                 filename: t.filename, // Torrent name
                 targetFilename: t.filename, // For single files, target matches torrent name roughly
-                original_bytes: t.original_bytes
+                bytes: t.bytes
             }));
         }
 
@@ -83,7 +83,7 @@ export async function findInCloud(query: string) {
                             id: candidate.id,
                             filename: candidate.filename, // Pack Name
                             targetFilename: episodeFile.path.split('/').pop(), // Specific File Name
-                            original_bytes: candidate.original_bytes
+                            bytes: candidate.bytes
                         }];
                     }
                 } catch (e) {
